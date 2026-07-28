@@ -1,0 +1,21 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./packages/ports-view"
+    },
+    {
+      "path": "./packages/build"
+    },
+    {
+      "path": "./packages/e2e"
+    },
+    {
+      "path": "./packages/memory"
+    },
+    {
+      "path": "./packages/server"
+    }
+  ]
+}

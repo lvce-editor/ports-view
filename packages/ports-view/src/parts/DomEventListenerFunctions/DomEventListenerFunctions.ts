@@ -1,0 +1,9 @@
+export const HandleAddPortInput = 1
+export const HandleAddPortKeyDown = 2
+export const HandleBlur = 3
+export const HandleCancelAddPort = 4
+export const HandleClick = 5
+export const HandleKeyDown = 6
+export const HandleStartAddPort = 7
+export const HandleSubmitAddPort = 8
+export const HandleWheel = 9

@@ -1,0 +1,8 @@
+export const Alert = 'alert'
+export const Cell = 'cell'
+export const ColumnHeader = 'columnheader'
+export const Link = 'link'
+export const Row = 'row'
+export const RowGroup = 'rowgroup'
+export const Status = 'status'
+export const Table = 'table'
