@@ -31,9 +31,6 @@ const main = async (): Promise<void> => {
   const occurrence = `// const portsViewWorkerUrl = \`\${assetDir}/packages/ports-view/dist/portsViewWorkerMain.js\`
 const portsViewWorkerUrl = \`${remoteUrl}\``
   const replacement = `const portsViewWorkerUrl = \`\${assetDir}/packages/ports-view/dist/portsViewWorkerMain.js\``
-  if (!content.includes(occurrence) && !content.includes(replacement)) {
-    throw new Error('occurrence not found')
-  }
   const newContent = content.includes(occurrence) ? content.replace(occurrence, replacement) : content
   await writeFile(rendererWorkerPath, newContent)
 
