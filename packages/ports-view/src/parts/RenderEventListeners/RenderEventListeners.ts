@@ -10,7 +10,6 @@ export const renderEventListeners = (): readonly any[] => {
     {
       name: DomEventListenerFunctions.HandleAddPortKeyDown,
       params: ['handleAddPortKeyDown', EventExpression.Key],
-      preventDefault: true,
     },
     {
       name: DomEventListenerFunctions.HandleBlur,

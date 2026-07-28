@@ -20,7 +20,7 @@ export const getPortsVirtualDom = (state: PortsState): readonly VirtualDomNode[]
     {
       ariaLabel: 'Ports',
       ariaRowCount: ports.length + 1,
-      childCount: 3,
+      childCount: 2,
       className: mergeClassNames(ClassNames.Viewlet, ClassNames.Ports),
       onBlur: DomEventListenerFunctions.HandleBlur,
       onClick: DomEventListenerFunctions.HandleClick,
