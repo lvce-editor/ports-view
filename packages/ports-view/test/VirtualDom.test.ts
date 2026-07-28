@@ -4,6 +4,7 @@ import { commandMap } from '../src/parts/CommandMap/CommandMap.ts'
 import { create } from '../src/parts/Create/Create.ts'
 import { diff2 } from '../src/parts/Diff2/Diff2.ts'
 import { isCssEqual, isDomEqual } from '../src/parts/DiffModules/DiffModules.ts'
+import * as DomEventListenerFunctions from '../src/parts/DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import { getCss } from '../src/parts/GetCss/GetCss.ts'
 import { getPortRowVirtualDom } from '../src/parts/GetPortRowVirtualDom/GetPortRowVirtualDom.ts'
 import { getPortsFooterVirtualDom } from '../src/parts/GetPortsFooterVirtualDom/GetPortsFooterVirtualDom.ts'
@@ -34,7 +35,7 @@ describe('virtual dom', () => {
       },
     ])
     const dom = getPortsVirtualDom(state)
-    expect(dom[0]).toMatchObject({ ariaLabel: 'Ports', className: 'Viewlet Ports', role: 'table', tabIndex: 0 })
+    expect(dom[0]).toMatchObject({ ariaLabel: 'Ports', childCount: 2, className: 'Viewlet Ports', role: 'table', tabIndex: 0 })
     expect(dom).toEqual(expect.arrayContaining([expect.objectContaining({ text: 'Forwarded Address' }), expect.objectContaining({ text: 'vite' })]))
     expect(dom).toEqual(
       expect.arrayContaining([expect.objectContaining({ text: 'Auto Forwarded' }), expect.objectContaining({ text: 'localhost:5173' })]),
@@ -126,6 +127,10 @@ describe('render protocol', () => {
     const listeners = renderEventListeners()
     expect(listeners).toHaveLength(9)
     expect(listeners).toEqual(expect.arrayContaining([expect.objectContaining({ params: ['handleKeyDown', 'event.key'] })]))
+    expect(listeners[1]).toEqual({
+      name: DomEventListenerFunctions.HandleAddPortKeyDown,
+      params: ['handleAddPortKeyDown', 'event.key'],
+    })
     expect(Object.keys(commandMap)).toEqual(expect.arrayContaining(['Ports.create', 'Ports.setPorts', 'Ports.addPort', 'Ports.removePort']))
   })
 
