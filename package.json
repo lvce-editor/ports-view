@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node packages/build/src/build.ts",
     "build:static": "node packages/build/src/build-static.ts",
-    "build:watch": "./node_modules/.bin/esbuild --format=esm --bundle --external:node:buffer --external:electron --external:ws --external:node:worker_threads --bundle --watch packages/ports-view/src/portsViewWorkerMain.ts --outfile=.tmp/dist/dist/portsViewWorkerMain.js",
+    "build:watch": "npm exec --workspace=packages/build -- esbuild --format=esm --bundle --external:node:buffer --external:electron --external:ws --external:node:worker_threads --bundle --watch packages/ports-view/src/portsViewWorkerMain.ts --outfile=.tmp/dist/dist/portsViewWorkerMain.js",
     "dev": "node packages/build/src/dev.ts",
     "e2e": "cd packages/e2e && npm run e2e",
     "e2e:firefox": "cd packages/e2e && npm run e2e:firefox",
@@ -18,7 +18,7 @@
     "e2e:webkit": "cd packages/e2e && npm run e2e:webkit",
     "e2e:webkit:headless": "cd packages/e2e && npm run e2e:webkit:headless",
     "format": "prettier --write .",
-    "lint": "eslint . && prettier --check .",
+    "lint": "eslint . && prettier --check . && knip --no-config-hints",
     "test": "npm test --workspaces --if-present",
     "test:watch": "node --unhandled-rejections=warn --experimental-vm-modules ./node_modules/jest/bin/jest.js --watch",
     "type-check": "tsc -b"
@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@lvce-editor/eslint-config": "^17.6.0",
+    "@lvce-editor/eslint-plugin-github-actions": "^17.6.0",
     "eslint": "^10.8.0",
+    "knip": "^6.29.0",
     "prettier": "^3.8.4",
     "typescript": "^6.0.3"
   }
