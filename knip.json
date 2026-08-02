@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "project": ["*.js"],
+      "ignoreDependencies": ["@lvce-editor/eslint-plugin-github-actions"]
+    },
+    "packages/build": {
+      "project": ["src/**/*.ts"],
+      "ignoreDependencies": ["@lvce-editor/verror", "esbuild"]
+    },
+    "packages/e2e": {
+      "entry": ["src/**/*.ts", "scripts/*.js"],
+      "project": ["src/**/*.ts", "scripts/*.js"]
+    },
+    "packages/memory": {
+      "project": ["src/**/*.ts"],
+      "ignoreDependencies": ["playwright"]
+    },
+    "packages/ports-view": {
+      "entry": ["src/portsViewWorkerMain.ts", "test/**/*.test.ts"],
+      "project": ["src/**/*.ts", "test/**/*.ts"]
+    },
+    "packages/server": {
+      "project": ["src/**/*.js"]
+    }
+  }
+}
