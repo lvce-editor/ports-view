@@ -3,6 +3,10 @@
   "version": "0.0.0-dev",
   "license": "MIT",
   "type": "module",
+  "main": "dist/portsViewWorkerMain.js",
+  "files": [
+    "dist"
+  ],
   "workspaces": [
     "packages/*"
   ],
@@ -19,6 +23,7 @@
     "e2e:webkit:headless": "cd packages/e2e && npm run e2e:webkit:headless",
     "format": "prettier --write .",
     "lint": "eslint . && prettier --check . && knip --no-config-hints",
+    "prepare": "npm run build && node packages/build/src/prepare-git-package.ts",
     "test": "npm test --workspaces --if-present",
     "test:watch": "node --unhandled-rejections=warn --experimental-vm-modules ./node_modules/jest/bin/jest.js --watch",
     "type-check": "tsc -b"
