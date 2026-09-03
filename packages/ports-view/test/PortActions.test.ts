@@ -92,8 +92,8 @@ describe('interaction', () => {
     await openAddress(state, 3000)
     await handleClick(state, 0, 'port-address-3000')
     expect(mockRpc.invocations).toEqual([
-      ['Main.openUri', 'http://127.0.0.1:3000', undefined, undefined],
-      ['Main.openUri', 'http://127.0.0.1:3000', undefined, undefined],
+      ['Main.openUri', { focus: undefined, uri: 'http://127.0.0.1:3000' }],
+      ['Main.openUri', { focus: undefined, uri: 'http://127.0.0.1:3000' }],
     ])
   })
 
@@ -138,7 +138,7 @@ describe('interaction', () => {
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     const state = setPorts(createTestState({ focusedIndex: 0 }), [{ port: 3000 }])
     await handleKeyDown(state, 'Enter')
-    expect(mockRpc.invocations).toEqual([['Main.openUri', 'http://localhost:3000', undefined, undefined]])
+    expect(mockRpc.invocations).toEqual([['Main.openUri', { focus: undefined, uri: 'http://localhost:3000' }]])
   })
 
   test('keyboard ignores unrelated keys, editing, and absent selection', async () => {
