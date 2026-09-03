@@ -15,6 +15,7 @@ export const isDomEqual = (oldState: PortsState, newState: PortsState): boolean 
 
 export const isCssEqual = (oldState: PortsState, newState: PortsState): boolean => {
   return (
+    oldState.loaded &&
     oldState.deltaY % oldState.itemHeight === newState.deltaY % newState.itemHeight &&
     oldState.footerHeight === newState.footerHeight &&
     oldState.headerHeight === newState.headerHeight &&
