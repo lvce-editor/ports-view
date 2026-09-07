@@ -20,8 +20,8 @@ import { togglePortActive } from '../src/parts/TogglePortActive/TogglePortActive
 import { createTestState } from './TestState.ts'
 
 describe('port mutations', () => {
-  test('loads, adds, replaces, removes, and toggles ports', () => {
-    const loaded = loadContent(createTestState({ loaded: false }))
+  test('loads, adds, replaces, removes, and toggles ports', async () => {
+    const loaded = await loadContent(createTestState({ loaded: false }))
     const added = addPort(loaded, { port: 9000 })
     const replaced = addPort(added, { active: false, port: 9000 })
     const toggled = togglePortActive(replaced, 9000)

@@ -44,6 +44,7 @@ export const commandMap = {
   'Ports.handleClick': PortsStates.wrapCommand(HandleClick.handleClick),
   'Ports.handleFocus': PortsStates.wrapCommand(HandleFocus.handleFocus),
   'Ports.handleWheel': PortsStates.wrapCommand(HandleWheel.handleWheel),
+  'Ports.handleWorkspaceChange': PortsStates.wrapCommand(LoadContent.loadContent),
   'Ports.loadContent': PortsStates.wrapCommand(LoadContent.loadContent),
   'Ports.openAddress': PortsStates.wrapCommand(OpenAddress.openAddress),
   'Ports.openFocusedAddress': PortsStates.wrapCommand(OpenFocusedAddress.openFocusedAddress),
