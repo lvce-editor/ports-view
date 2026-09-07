@@ -1,9 +1,6 @@
-import { RendererWorker } from '@lvce-editor/rpc-registry'
 import type { PortsState } from '../PortsState/PortsState.ts'
-import * as WhenExpression from '../WhenExpression/WhenExpression.ts'
 
-export const handleBlur = async (state: PortsState): Promise<PortsState> => {
-  await RendererWorker.invoke('Focus.clearFocus', WhenExpression.FocusPorts)
+export const handleBlur = (state: PortsState): PortsState => {
   return {
     ...state,
     focused: false,
