@@ -7,6 +7,7 @@ export const createTestState = (overrides: Partial<PortsState> = {}): PortsState
     deltaY: 0,
     editing: false,
     finalDeltaY: 0,
+    focused: false,
     focusedIndex: -1,
     footerHeight: 36,
     headerHeight: 28,

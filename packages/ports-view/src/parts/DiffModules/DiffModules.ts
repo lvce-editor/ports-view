@@ -1,5 +1,9 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 
+export const isFocusContextEqual = (oldState: PortsState, newState: PortsState): boolean => {
+  return oldState.focused === newState.focused && oldState.editing === newState.editing
+}
+
 export const isDomEqual = (oldState: PortsState, newState: PortsState): boolean => {
   return (
     oldState.addPortError === newState.addPortError &&
