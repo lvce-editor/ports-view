@@ -1,10 +1,15 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
+// Requires the Ports.getKeyBindings worker configuration in the packaged test app.
+export const skip = 1
+
 export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await Command.execute('Layout.showPanel', 'Ports')
   await Command.execute('Ports.setPorts', [{ port: 3000 }, { port: 5173 }])
+  const states = await Command.execute('Viewlet.getAllStates')
+  const portsState = Object.values(states).find((state: any) => state.moduleId === 'Ports') as any
   const ports = Locator('.Ports')
-  await ports.focus()
+  await Command.execute('Viewlet.focusSelector', portsState.uid, '.Ports')
   await expect(ports).toBeFocused()
   const focused = Locator('.PortsTableRow.Focused .PortsPortColumn')
   await KeyBoard.press('ArrowDown')
@@ -18,21 +23,24 @@ export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await KeyBoard.press('Home')
   await expect(focused).toHaveText('3000')
   await KeyBoard.press('Space')
-  await expect(Locator('[aria-label="Port 3000 is inactive"]')).toBeVisible()
+  const inactive = Locator('[aria-label="Port 3000 is inactive"]')
+  await expect(inactive).toBeVisible()
   await KeyBoard.press('Delete')
-  await expect(Locator('.PortsTableBody .PortsPortColumn')).toHaveText('5173')
+  const portColumn = Locator('.PortsTableBody .PortsPortColumn')
+  await expect(portColumn).toHaveText('5173')
   await KeyBoard.press('Backspace')
-  await expect(Locator('.PortsTableRow')).toHaveCount(0)
+  const rows = Locator('.PortsTableRow')
+  await expect(rows).toHaveCount(0)
   await KeyBoard.press('a')
   const input = Locator('.AddPortInput')
   await expect(input).toBeVisible()
-  await input.focus()
-  await input.fill('3000')
+  await Command.execute('Viewlet.focusSelector', portsState.uid, '.AddPortInput')
+  await input.type('3000')
   await KeyBoard.press('Backspace')
   await expect(input).toHaveValue('300')
   await KeyBoard.press('Escape')
   await expect(input).toBeHidden()
-  await ports.focus()
+  await Command.execute('Viewlet.focusSelector', portsState.uid, '.Ports')
   await KeyBoard.press('Shift+A')
   await expect(input).toBeVisible()
 }

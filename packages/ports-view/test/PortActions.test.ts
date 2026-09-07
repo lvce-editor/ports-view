@@ -154,9 +154,9 @@ describe('interaction', () => {
 
   test('blur clears the ports focus context and selection', async () => {
     using mockRpc = RendererWorker.registerMockRpc({
-      'Focus.clearFocus': async (): Promise<void> => {},
+      'Focus.removeAdditionalFocus': async (): Promise<void> => {},
     })
     expect(await handleBlur(createTestState({ focused: true, focusedIndex: 2 }))).toMatchObject({ focused: false, focusedIndex: -1 })
-    expect(mockRpc.invocations).toEqual([['Focus.clearFocus', 9000]])
+    expect(mockRpc.invocations).toEqual([['Focus.removeAdditionalFocus', 9000]])
   })
 })
