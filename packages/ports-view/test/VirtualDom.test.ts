@@ -126,7 +126,7 @@ describe('render protocol', () => {
   test('registers interaction event listeners and commands', () => {
     const listeners = renderEventListeners()
     expect(listeners).toHaveLength(9)
-    expect(listeners).toEqual(expect.arrayContaining([expect.objectContaining({ params: ['handleKeyDown', 'event.key'] })]))
+    expect(listeners).toEqual(expect.arrayContaining([expect.objectContaining({ params: ['handleFocus'] })]))
     expect(listeners[1]).toEqual({
       name: DomEventListenerFunctions.HandleAddPortKeyDown,
       params: ['handleAddPortKeyDown', 'event.key'],

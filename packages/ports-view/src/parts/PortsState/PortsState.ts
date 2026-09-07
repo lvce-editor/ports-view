@@ -6,6 +6,7 @@ export interface PortsState {
   readonly deltaY: number
   readonly editing: boolean
   readonly finalDeltaY: number
+  readonly focused: boolean
   readonly focusedIndex: number
   readonly footerHeight: number
   readonly headerHeight: number
