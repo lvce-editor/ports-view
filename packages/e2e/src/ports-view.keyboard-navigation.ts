@@ -3,14 +3,14 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 // Requires the Ports.getKeyBindings worker configuration in the packaged test app.
 export const skip = 1
 
-export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
-  await Command.execute('Layout.showPanel', 'Ports')
-  await Command.execute('Ports.setPorts', [{ port: 3000 }, { port: 5173 }])
-  const ports = Locator('.Ports')
-  // eslint-disable-next-line e2e/no-direct-click -- The installed test API has no ports page object to focus the table.
+export const test: Test = async ({ expect, KeyBoard, Ports }) => {
+  await Ports.open()
+  await Ports.setPorts([{ port: 3000 }, { port: 5173 }])
+  const ports = Ports.root()
+  // eslint-disable-next-line e2e/no-direct-click -- Focus the table through the Ports page object locator.
   await ports.click()
   await expect(ports).toBeFocused()
-  const focused = Locator('.PortsTableRow.Focused .PortsPortColumn')
+  const focused = Ports.focusedPort()
   await KeyBoard.press('ArrowDown')
   await expect(focused).toHaveText('3000')
   await KeyBoard.press('ArrowDown')
@@ -22,25 +22,24 @@ export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await KeyBoard.press('Home')
   await expect(focused).toHaveText('3000')
   await KeyBoard.press('Space')
-  const inactive = Locator('[aria-label="Port 3000 is inactive"]')
-  await expect(inactive).toBeVisible()
+  await expect(Ports.statusButton(0)).toHaveAttribute('aria-label', 'Port 3000 is inactive')
   await KeyBoard.press('Delete')
-  const portColumn = Locator('.PortsTableBody .PortsPortColumn')
+  const portColumn = Ports.portCell(0)
   await expect(portColumn).toHaveText('5173')
   await KeyBoard.press('Backspace')
-  const rows = Locator('.PortsTableRow')
+  const rows = Ports.rows()
   await expect(rows).toHaveCount(0)
   await KeyBoard.press('a')
-  const input = Locator('.AddPortInput')
+  const input = Ports.addInput()
   await expect(input).toBeVisible()
-  // eslint-disable-next-line e2e/no-direct-click -- The installed test API has no ports page object to focus the input.
+  // eslint-disable-next-line e2e/no-direct-click -- Focus the input through the Ports page object locator.
   await input.click()
   await input.type('3000')
   await KeyBoard.press('Backspace')
   await expect(input).toHaveValue('300')
   await KeyBoard.press('Escape')
   await expect(input).toBeHidden()
-  // eslint-disable-next-line e2e/no-direct-click -- The installed test API has no ports page object to focus the table.
+  // eslint-disable-next-line e2e/no-direct-click -- Focus the table through the Ports page object locator.
   await ports.click()
   await KeyBoard.press('Shift+A')
   await expect(input).toBeVisible()

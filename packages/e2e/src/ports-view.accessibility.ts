@@ -2,14 +2,13 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const skip = 1
 
-export const test: Test = async ({ Command, expect, Locator }) => {
-  await Command.execute('Layout.showPanel', 'Ports')
-  await Command.execute('Ports.setPorts', [{ port: 3000 }])
-  const table = Locator('.Ports')
+export const test: Test = async ({ expect, Ports }) => {
+  await Ports.open()
+  await Ports.setPorts([{ port: 3000 }])
+  const table = Ports.root()
   await expect(table).toHaveAttribute('role', 'table')
   await expect(table).toHaveAttribute('aria-label', 'Ports')
-  const row = Locator('.PortsTableBody .PortsTableRow')
+  const row = Ports.rows()
   await expect(row).toHaveAttribute('role', 'row')
-  const address = row.locator('.PortsAddressLink')
-  await expect(address).toHaveAttribute('role', 'link')
+  await expect(Ports.addressLink(0)).toHaveAttribute('role', 'link')
 }
