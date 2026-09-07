@@ -6,6 +6,7 @@ import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEven
 import * as GetPortsFooterVirtualDom from '../GetPortsFooterVirtualDom/GetPortsFooterVirtualDom.ts'
 import * as GetPortsTableBodyVirtualDom from '../GetPortsTableBodyVirtualDom/GetPortsTableBodyVirtualDom.ts'
 import * as GetPortsTableHeaderVirtualDom from '../GetPortsTableHeaderVirtualDom/GetPortsTableHeaderVirtualDom.ts'
+import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const table: VirtualDomNode = {
@@ -18,7 +19,7 @@ export const getPortsVirtualDom = (state: PortsState): readonly VirtualDomNode[]
   const { ports } = state
   return [
     {
-      ariaLabel: 'Ports',
+      ariaLabel: PortsStrings.ports(),
       ariaRowCount: ports.length + 1,
       childCount: 2,
       className: mergeClassNames(ClassNames.Viewlet, ClassNames.Ports),

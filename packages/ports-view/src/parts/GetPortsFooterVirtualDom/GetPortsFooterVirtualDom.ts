@@ -3,6 +3,7 @@ import type { PortsState } from '../PortsState/PortsState.ts'
 import * as AriaRoles from '../AriaRoles/AriaRoles.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
+import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
 
 const addButton: VirtualDomNode = {
   childCount: 1,
@@ -10,8 +11,6 @@ const addButton: VirtualDomNode = {
   onClick: DomEventListenerFunctions.HandleStartAddPort,
   type: VirtualDomElements.Button,
 }
-
-const addButtonDom: readonly VirtualDomNode[] = [addButton, text('Add Port')]
 
 const cancelButton: VirtualDomNode = {
   childCount: 1,
@@ -54,13 +53,13 @@ const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
       type: VirtualDomElements.Div,
     },
     {
-      ariaLabel: 'Port number',
+      ariaLabel: PortsStrings.portNumber(),
       childCount: 0,
       className: ClassNames.AddPortInput,
       inputMode: 'numeric',
       onInput: DomEventListenerFunctions.HandleAddPortInput,
       onKeyDown: DomEventListenerFunctions.HandleAddPortKeyDown,
-      placeholder: 'Port number',
+      placeholder: PortsStrings.portNumber(),
       type: VirtualDomElements.Input,
       value: addPortValue,
     },
@@ -71,15 +70,15 @@ const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
       onClick: DomEventListenerFunctions.HandleSubmitAddPort,
       type: VirtualDomElements.Button,
     },
-    text('Add'),
+    text(PortsStrings.add()),
     cancelButton,
-    text('Cancel'),
+    text(PortsStrings.cancel()),
     ...getErrorDom(addPortError),
   ]
 }
 
 export const getPortsFooterVirtualDom = (state: PortsState): readonly VirtualDomNode[] => {
   const { editing } = state
-  const content = editing ? getEditor(state) : addButtonDom
+  const content = editing ? getEditor(state) : [addButton, text(PortsStrings.addPort())]
   return [footer, footerContent, ...content]
 }
