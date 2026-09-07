@@ -27,5 +27,5 @@ test('disables table shortcuts while adding a port', () => {
 
 test('removes only the ports context when the table loses focus', () => {
   const state = createTestState()
-  expect(renderFocusContext(state, state)).toEqual([ViewletCommand.UnsetAdditionalFocus, 1, WhenExpression.FocusPorts])
+  expect(renderFocusContext(state, state)).toEqual(['Viewlet.unsetAdditionalFocus', 1, WhenExpression.FocusPorts])
 })
