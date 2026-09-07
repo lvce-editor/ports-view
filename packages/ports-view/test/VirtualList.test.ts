@@ -12,23 +12,26 @@ const manyPorts = Array.from({ length: 1000 }, (_, index) => ({ port: index + 1 
 describe('virtual list', () => {
   test('only exposes enough rows for the viewport', () => {
     const state = setPorts(createTestState(), manyPorts)
-    expect(state.minLineY).toBe(0)
-    expect(state.maxLineY).toBe(5)
-    expect(state.finalDeltaY).toBe(23_904)
-    expect(state.scrollBarHeight).toBe(20)
+    const { finalDeltaY, maxLineY, minLineY, scrollBarHeight } = state
+    expect(minLineY).toBe(0)
+    expect(maxLineY).toBe(5)
+    expect(finalDeltaY).toBe(23_904)
+    expect(scrollBarHeight).toBe(20)
   })
 
   test('calculates a middle range', () => {
     const state = setDeltaY(setPorts(createTestState(), manyPorts), 12_000)
-    expect(state.minLineY).toBe(500)
-    expect(state.maxLineY).toBe(505)
-    expect(state.scrollBarY).toBeGreaterThan(0)
+    const { maxLineY, minLineY, scrollBarY } = state
+    expect(minLineY).toBe(500)
+    expect(maxLineY).toBe(505)
+    expect(scrollBarY).toBeGreaterThan(0)
   })
 
   test('clamps overscroll', () => {
     const state = setDeltaY(setPorts(createTestState(), manyPorts), 1_000_000)
-    expect(state.deltaY).toBe(state.finalDeltaY)
-    expect(state.maxLineY).toBe(1000)
+    const { deltaY, finalDeltaY, maxLineY } = state
+    expect(deltaY).toBe(finalDeltaY)
+    expect(maxLineY).toBe(1000)
   })
 
   test('handles empty and zero-height lists', () => {
@@ -58,14 +61,16 @@ describe('focus', () => {
 
   test('scrolls focused rows into view', () => {
     const state = focusIndex(setPorts(createTestState(), manyPorts), 10)
-    expect(state.deltaY).toBe(168)
-    expect(state.minLineY).toBe(7)
+    const { deltaY, minLineY } = state
+    expect(deltaY).toBe(168)
+    expect(minLineY).toBe(7)
     expect(focusIndex(state, 1).deltaY).toBe(24)
   })
 
   test('moves backward from no selection to the last row', () => {
     const state = focusPrevious(setPorts(createTestState(), [{ port: 3000 }, { port: 9000 }]))
-    expect(state.focusedIndex).toBe(1)
+    const { focusedIndex } = state
+    expect(focusedIndex).toBe(1)
   })
 
   test('keeps empty state unfocused', () => {

@@ -7,15 +7,11 @@
     },
     "packages/build": {
       "project": ["src/**/*.ts"],
-      "ignoreDependencies": ["@lvce-editor/verror", "esbuild"]
+      "ignoreDependencies": ["@lvce-editor/verror", "esbuild", "playwright"]
     },
     "packages/e2e": {
       "entry": ["src/**/*.ts", "scripts/*.js"],
       "project": ["src/**/*.ts", "scripts/*.js"]
-    },
-    "packages/memory": {
-      "project": ["src/**/*.ts"],
-      "ignoreDependencies": ["playwright"]
     },
     "packages/ports-view": {
       "entry": ["src/portsViewWorkerMain.ts", "test/**/*.test.ts"],

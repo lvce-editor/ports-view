@@ -3,7 +3,8 @@ import type { PortsState } from '../PortsState/PortsState.ts'
 import * as GetAddressUrl from '../GetAddressUrl/GetAddressUrl.ts'
 
 export const openAddress = async (state: PortsState, portNumber: number): Promise<PortsState> => {
-  const port = state.ports.find((item) => item.port === portNumber)
+  const { ports } = state
+  const port = ports.find((item) => item.port === portNumber)
   if (!port || !port.forwardedAddress) {
     return state
   }
