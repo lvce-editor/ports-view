@@ -6,10 +6,9 @@ export const skip = 1
 export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await Command.execute('Layout.showPanel', 'Ports')
   await Command.execute('Ports.setPorts', [{ port: 3000 }, { port: 5173 }])
-  const states = await Command.execute('Viewlet.getAllStates')
-  const portsState = Object.values(states).find((state: any) => state.moduleId === 'Ports') as any
   const ports = Locator('.Ports')
-  await Command.execute('Viewlet.focusSelector', portsState.uid, '.Ports')
+  // eslint-disable-next-line e2e/no-direct-click -- The installed test API has no ports page object to focus the table.
+  await ports.click()
   await expect(ports).toBeFocused()
   const focused = Locator('.PortsTableRow.Focused .PortsPortColumn')
   await KeyBoard.press('ArrowDown')
@@ -34,13 +33,15 @@ export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await KeyBoard.press('a')
   const input = Locator('.AddPortInput')
   await expect(input).toBeVisible()
-  await Command.execute('Viewlet.focusSelector', portsState.uid, '.AddPortInput')
+  // eslint-disable-next-line e2e/no-direct-click -- The installed test API has no ports page object to focus the input.
+  await input.click()
   await input.type('3000')
   await KeyBoard.press('Backspace')
   await expect(input).toHaveValue('300')
   await KeyBoard.press('Escape')
   await expect(input).toBeHidden()
-  await Command.execute('Viewlet.focusSelector', portsState.uid, '.Ports')
+  // eslint-disable-next-line e2e/no-direct-click -- The installed test API has no ports page object to focus the table.
+  await ports.click()
   await KeyBoard.press('Shift+A')
   await expect(input).toBeVisible()
 }
