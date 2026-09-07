@@ -98,11 +98,12 @@ describe('virtualization rendering', () => {
     expect(getPortsTableBodyVirtualDom(state)[0]).toMatchObject({ ariaRowCount: 1001, childCount: 5 })
   })
 
-  test('css positions partial rows and styles the table', () => {
+  test('css positions partial rows and sizes the table', () => {
     const css = getCss(createTestState({ deltaY: 13 }))
     expect(css).toContain('margin-top: -13px')
-    expect(css).toContain('grid-template-columns: 42px')
-    expect(css).toContain('.PortsStatusIconActive')
+    expect(css).toContain('grid-template-rows: minmax(0, 1fr) 36px')
+    expect(css).toContain('grid-template-rows: 28px minmax(0, 1fr)')
+    expect(css).toContain('height: 24px')
   })
 })
 
