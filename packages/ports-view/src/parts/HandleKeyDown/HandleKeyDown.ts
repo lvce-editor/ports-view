@@ -6,7 +6,8 @@ import * as RemovePort from '../RemovePort/RemovePort.ts'
 import * as TogglePortActive from '../TogglePortActive/TogglePortActive.ts'
 
 export const handleKeyDown = async (state: PortsState, key: string): Promise<PortsState> => {
-  if (state.editing) {
+  const { editing, focusedIndex, ports } = state
+  if (editing) {
     return state
   }
   if (key === 'ArrowDown') {
@@ -19,12 +20,12 @@ export const handleKeyDown = async (state: PortsState, key: string): Promise<Por
     return FocusIndex.focusIndex(state, 0)
   }
   if (key === 'End') {
-    return FocusIndex.focusIndex(state, state.ports.length - 1)
+    return FocusIndex.focusIndex(state, ports.length - 1)
   }
   if (key === 'a' || key === 'A') {
     return AddPortEditor.startAddPort(state)
   }
-  const selected = state.ports[state.focusedIndex]
+  const selected = ports[focusedIndex]
   if (!selected) {
     return state
   }
