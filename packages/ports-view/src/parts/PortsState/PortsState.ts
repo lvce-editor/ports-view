@@ -14,6 +14,7 @@ export interface PortsState {
   readonly listHeight: number
   readonly loaded: boolean
   readonly maxLineY: number
+  readonly minimumScrollBarSize: number
   readonly minLineY: number
   readonly parentUid?: number
   readonly platform: number
