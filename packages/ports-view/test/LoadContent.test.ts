@@ -41,15 +41,16 @@ test('late remote results cannot restore ports after a workspace change', async 
   const { promise, resolve } = Promise.withResolvers<readonly { port: number; forwardedAddress: string }[]>()
   using rpc = RendererWorker.registerMockRpc({ 'Application.executeForView': () => promise })
   const state = createTestState()
-  PortsStates.set(state.uid, state, state)
+  const { uid } = state
+  PortsStates.set(uid, state, state)
   try {
     const pending = loadContent(state, 'codespaces://old/app')
     const closed = await loadContent(state, '')
-    PortsStates.set(state.uid, state, closed)
+    PortsStates.set(uid, state, closed)
     resolve([{ forwardedAddress: 'https://old-3000.app.github.dev/', port: 3000 }])
     expect(await pending).toBe(closed)
     expect(rpc.invocations).toHaveLength(1)
   } finally {
-    PortsStates.dispose(state.uid)
+    PortsStates.dispose(uid)
   }
 })
