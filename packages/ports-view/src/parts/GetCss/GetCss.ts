@@ -1,11 +1,12 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 
 export const getCss = (state: PortsState): string => {
-  const relativeY = -(state.deltaY % state.itemHeight)
+  const { deltaY, footerHeight, headerHeight, itemHeight } = state
+  const relativeY = -(deltaY % itemHeight)
   return `.Ports {
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) ${state.footerHeight}px;
+  grid-template-rows: minmax(0, 1fr) ${footerHeight}px;
   height: 100%;
   min-height: 0;
   outline: none;
@@ -17,7 +18,7 @@ export const getCss = (state: PortsState): string => {
 
 .PortsTable {
   display: grid;
-  grid-template-rows: ${state.headerHeight}px minmax(0, 1fr);
+  grid-template-rows: ${headerHeight}px minmax(0, 1fr);
   min-height: 0;
   overflow: hidden;
 }
@@ -47,7 +48,7 @@ export const getCss = (state: PortsState): string => {
 }
 
 .PortsTableRow {
-  height: ${state.itemHeight}px;
+  height: ${itemHeight}px;
   align-items: center;
   flex-shrink: 0;
 }

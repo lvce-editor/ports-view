@@ -30,8 +30,9 @@ describe('port mutations', () => {
 
   test('ignores unknown toggle and remove targets', () => {
     const state = setPorts(createTestState(), [{ port: 3000 }])
-    expect(togglePortActive(state, 9000).ports).toEqual(state.ports)
-    expect(removePort(state, 9000).ports).toEqual(state.ports)
+    const { ports } = state
+    expect(togglePortActive(state, 9000).ports).toEqual(ports)
+    expect(removePort(state, 9000).ports).toEqual(ports)
   })
 })
 
@@ -48,8 +49,9 @@ describe('add port editor', () => {
 
   test.each(['', 'abc', '0', '65536'])('shows validation for %p', (value) => {
     const state = submitAddPort(createTestState({ addPortValue: value, editing: true }))
-    expect(state.addPortError).toBe('Enter a port number between 1 and 65535')
-    expect(state.editing).toBe(true)
+    const { addPortError, editing } = state
+    expect(addPortError).toBe('Enter a port number between 1 and 65535')
+    expect(editing).toBe(true)
   })
 
   test('handles enter, escape, and unrelated keys', () => {
