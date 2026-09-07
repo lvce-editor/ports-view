@@ -27,6 +27,7 @@ export const create = (
     listHeight: 0,
     loaded: false,
     maxLineY: 0,
+    minimumScrollBarSize: 20,
     minLineY: 0,
     parentUid,
     platform,
