@@ -2,15 +2,20 @@ import { describe, expect, test } from '@jest/globals'
 import { RendererWorker } from '@lvce-editor/rpc-registry'
 import { addPort } from '../src/parts/AddPort/AddPort.ts'
 import { cancelAddPort, handleAddPortInput, handleAddPortKeyDown, startAddPort, submitAddPort } from '../src/parts/AddPortEditor/AddPortEditor.ts'
+import { focusFirst } from '../src/parts/FocusFirst/FocusFirst.ts'
+import { focusNext, focusPrevious } from '../src/parts/FocusIndex/FocusIndex.ts'
+import { focusLast } from '../src/parts/FocusLast/FocusLast.ts'
 import { getAddressUrl } from '../src/parts/GetAddressUrl/GetAddressUrl.ts'
 import { handleBlur } from '../src/parts/HandleBlur/HandleBlur.ts'
 import { handleClick } from '../src/parts/HandleClick/HandleClick.ts'
 import { handleClickAt } from '../src/parts/HandleClickAt/HandleClickAt.ts'
-import { handleKeyDown } from '../src/parts/HandleKeyDown/HandleKeyDown.ts'
 import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
 import { openAddress } from '../src/parts/OpenAddress/OpenAddress.ts'
+import { openFocusedAddress } from '../src/parts/OpenFocusedAddress/OpenFocusedAddress.ts'
+import { removeFocusedPort } from '../src/parts/RemoveFocusedPort/RemoveFocusedPort.ts'
 import { removePort } from '../src/parts/RemovePort/RemovePort.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
+import { toggleFocusedPort } from '../src/parts/ToggleFocusedPort/ToggleFocusedPort.ts'
 import { togglePortActive } from '../src/parts/TogglePortActive/TogglePortActive.ts'
 import { createTestState } from './TestState.ts'
 
@@ -30,8 +35,9 @@ describe('port mutations', () => {
 
   test('ignores unknown toggle and remove targets', () => {
     const state = setPorts(createTestState(), [{ port: 3000 }])
-    expect(togglePortActive(state, 9000).ports).toEqual(state.ports)
-    expect(removePort(state, 9000).ports).toEqual(state.ports)
+    const { ports } = state
+    expect(togglePortActive(state, 9000).ports).toEqual(ports)
+    expect(removePort(state, 9000).ports).toEqual(ports)
   })
 })
 
@@ -48,8 +54,9 @@ describe('add port editor', () => {
 
   test.each(['', 'abc', '0', '65536'])('shows validation for %p', (value) => {
     const state = submitAddPort(createTestState({ addPortValue: value, editing: true }))
-    expect(state.addPortError).toBe('Enter a port number between 1 and 65535')
-    expect(state.editing).toBe(true)
+    const { addPortError, editing } = state
+    expect(addPortError).toBe('Enter a port number between 1 and 65535')
+    expect(editing).toBe(true)
   })
 
   test('handles enter, escape, and unrelated keys', () => {
@@ -107,28 +114,22 @@ describe('interaction', () => {
     expect(mockRpc.invocations).toEqual([])
   })
 
-  test('keyboard navigation, activation, deletion, and add shortcut', async () => {
+  test('navigation, activation, deletion, and add commands', () => {
     const state = setPorts(createTestState(), [{ port: 3000 }, { port: 5173 }])
-    const down = await handleKeyDown(state, 'ArrowDown')
-    const toggled = await handleKeyDown(down, ' ')
-    const removed = await handleKeyDown(toggled, 'Delete')
+    const down = focusNext(state)
+    const toggled = toggleFocusedPort(down)
+    const removed = removeFocusedPort(toggled)
     expect(down.focusedIndex).toBe(0)
     expect(toggled.ports[0].active).toBe(false)
     expect(removed.ports.map((item) => item.port)).toEqual([5173])
-    const end = await handleKeyDown(state, 'End')
-    const home = await handleKeyDown(state, 'Home')
-    const upperAdd = await handleKeyDown(state, 'A')
-    const lowerAdd = await handleKeyDown(state, 'a')
-    const up = await handleKeyDown({ ...state, focusedIndex: 1 }, 'ArrowUp')
-    const spacebar = await handleKeyDown(down, 'Spacebar')
-    const backspace = await handleKeyDown(down, 'Backspace')
+    const end = focusLast(state)
+    const home = focusFirst(state)
+    const added = startAddPort(state)
+    const up = focusPrevious({ ...state, focusedIndex: 1 })
     expect(end.focusedIndex).toBe(1)
     expect(home.focusedIndex).toBe(0)
-    expect(upperAdd.editing).toBe(true)
-    expect(lowerAdd.editing).toBe(true)
+    expect(added.editing).toBe(true)
     expect(up.focusedIndex).toBe(0)
-    expect(spacebar.ports[0].active).toBe(false)
-    expect(backspace.ports.map((item) => item.port)).toEqual([5173])
   })
 
   test('enter opens the selected address', async () => {
@@ -137,16 +138,25 @@ describe('interaction', () => {
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     const state = setPorts(createTestState({ focusedIndex: 0 }), [{ port: 3000 }])
-    await handleKeyDown(state, 'Enter')
+    await openFocusedAddress(state)
     expect(mockRpc.invocations).toEqual([['Main.openUri', { focus: undefined, uri: 'http://localhost:3000' }]])
   })
 
-  test('keyboard ignores unrelated keys, editing, and absent selection', async () => {
-    const state = createTestState()
-    expect(await handleKeyDown(state, 'Enter')).toBe(state)
-    expect(await handleKeyDown(state, 'x')).toBe(state)
-    const editing = { ...state, editing: true }
-    expect(await handleKeyDown(editing, 'ArrowDown')).toBe(editing)
-    expect(handleBlur({ ...state, focusedIndex: 2 }).focusedIndex).toBe(-1)
+  test('selected commands ignore editing and absent selection', async () => {
+    const empty = createTestState()
+    const editing = { ...setPorts(createTestState({ focusedIndex: 0 }), [{ port: 3000 }]), editing: true }
+    for (const state of [empty, editing]) {
+      expect(await openFocusedAddress(state)).toBe(state)
+      expect(toggleFocusedPort(state)).toBe(state)
+      expect(removeFocusedPort(state)).toBe(state)
+    }
+  })
+
+  test('blur clears the ports focus context and selection', async () => {
+    using mockRpc = RendererWorker.registerMockRpc({
+      'Focus.clearFocus': async (): Promise<void> => {},
+    })
+    expect(await handleBlur(createTestState({ focused: true, focusedIndex: 2 }))).toMatchObject({ focused: false, focusedIndex: -1 })
+    expect(mockRpc.invocations).toEqual([['Focus.clearFocus', 9000]])
   })
 })

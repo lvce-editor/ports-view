@@ -5,5 +5,9 @@ import * as PortsStates from '../PortsStates/PortsStates.ts'
 export const diff2 = (uid: number): readonly number[] => {
   const { oldState } = PortsStates.get(uid)
   const domDiffType = oldState.loaded ? DiffType.RenderIncremental : DiffType.RenderDom
-  return PortsStates.diff(uid, [DiffModules.isDomEqual, DiffModules.isCssEqual], [domDiffType, DiffType.RenderCss])
+  return PortsStates.diff(
+    uid,
+    [DiffModules.isDomEqual, DiffModules.isCssEqual, DiffModules.isFocusContextEqual],
+    [domDiffType, DiffType.RenderCss, DiffType.RenderFocusContext],
+  )
 }
