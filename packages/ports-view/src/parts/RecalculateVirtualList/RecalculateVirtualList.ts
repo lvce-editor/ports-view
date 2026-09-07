@@ -4,11 +4,11 @@ import * as Clamp from '../Clamp/Clamp.ts'
 const MinimumScrollBarSize = 20
 
 export const recalculateVirtualList = (state: PortsState): PortsState => {
-  const { footerHeight, headerHeight, height, itemHeight, ports } = state
+  const { deltaY: oldDeltaY, footerHeight, headerHeight, height, itemHeight, ports } = state
   const listHeight = Math.max(0, height - headerHeight - footerHeight)
   const contentHeight = ports.length * itemHeight
   const finalDeltaY = Math.max(0, contentHeight - listHeight)
-  const deltaY = Clamp.clamp(state.deltaY, 0, finalDeltaY)
+  const deltaY = Clamp.clamp(oldDeltaY, 0, finalDeltaY)
   const minLineY = itemHeight === 0 ? 0 : Math.floor(deltaY / itemHeight)
   const visibleCount = itemHeight === 0 ? 0 : Math.ceil(listHeight / itemHeight) + 1
   const maxLineY = Math.min(ports.length, minLineY + visibleCount)

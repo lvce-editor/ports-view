@@ -1,9 +1,10 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 
 export const togglePortActive = (state: PortsState, portNumber: number): PortsState => {
+  const { ports } = state
   return {
     ...state,
-    ports: state.ports.map((item) => {
+    ports: ports.map((item) => {
       if (item.port !== portNumber) {
         return item
       }
