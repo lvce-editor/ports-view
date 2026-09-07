@@ -1,6 +1,7 @@
 import { expect, test } from '@jest/globals'
 import { RendererWorker } from '@lvce-editor/rpc-registry'
 import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
+import * as PortsStates from '../src/parts/PortsStates/PortsStates.ts'
 import { createTestState } from './TestState.ts'
 
 test('loads port 3000 and its Codespaces forwarded URL from the workspace provider', async () => {
@@ -34,4 +35,21 @@ test('reports provider failures', async () => {
   })
   await expect(loadContent(createTestState(), 'codespaces://test-space/app')).rejects.toThrow('disconnected')
   expect(rpc.invocations).toHaveLength(1)
+})
+
+test('late remote results cannot restore ports after a workspace change', async () => {
+  const { promise, resolve } = Promise.withResolvers<readonly { port: number; forwardedAddress: string }[]>()
+  using rpc = RendererWorker.registerMockRpc({ 'Application.executeForView': () => promise })
+  const state = createTestState()
+  PortsStates.set(state.uid, state, state)
+  try {
+    const pending = loadContent(state, 'codespaces://old/app')
+    const closed = await loadContent(state, '')
+    PortsStates.set(state.uid, state, closed)
+    resolve([{ forwardedAddress: 'https://old-3000.app.github.dev/', port: 3000 }])
+    expect(await pending).toBe(closed)
+    expect(rpc.invocations).toHaveLength(1)
+  } finally {
+    PortsStates.dispose(state.uid)
+  }
 })
