@@ -3,6 +3,7 @@ import * as config from '@lvce-editor/eslint-config'
 
 export default defineConfig([
   ...config.default,
+  ...config.recommendedRegex,
   ...config.recommendedVirtualDom,
   ...config.recommendedActions,
   {
