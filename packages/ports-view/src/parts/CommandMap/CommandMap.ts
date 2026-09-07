@@ -43,6 +43,7 @@ export const commandMap = {
   'Ports.handleBlur': PortsStates.wrapCommand(HandleBlur.handleBlur),
   'Ports.handleClick': PortsStates.wrapCommand(HandleClick.handleClick),
   'Ports.handleFocus': PortsStates.wrapCommand(HandleFocus.handleFocus),
+  'Ports.handleWorkspaceChange': PortsStates.wrapCommand(LoadContent.loadContent),
   'Ports.handleWheel': PortsStates.wrapCommand(HandleWheel.handleWheel),
   'Ports.loadContent': PortsStates.wrapCommand(LoadContent.loadContent),
   'Ports.openAddress': PortsStates.wrapCommand(OpenAddress.openAddress),
