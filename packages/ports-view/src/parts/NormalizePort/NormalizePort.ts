@@ -1,5 +1,6 @@
 import type { Port } from '../Port/Port.ts'
 import type { PortInput } from '../PortInput/PortInput.ts'
+import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
 
 const assertString: (value: unknown, name: string) => asserts value is string = (value, name) => {
   if (typeof value !== 'string') {
@@ -17,7 +18,7 @@ export const normalizePort = (input: PortInput): Port => {
   }
   const forwardedAddress = input.forwardedAddress ?? `localhost:${port}`
   const runningProcess = input.runningProcess ?? ''
-  const origin = input.origin ?? 'User Forwarded'
+  const origin = input.origin ?? PortsStrings.userForwarded()
   assertString(forwardedAddress, 'forwardedAddress')
   assertString(runningProcess, 'runningProcess')
   assertString(origin, 'origin')
