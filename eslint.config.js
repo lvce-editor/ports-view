@@ -19,7 +19,7 @@ export default defineConfig([
   },
   {
     rules: {
-      'virtual-dom/no-inline-event-handlers': 'off',
+      // 'virtual-dom/no-inline-event-handlers': 'off',
       'virtual-dom/prefer-constants': 'off',
       'virtual-dom/prefer-merge-class-names': 'off',
       'virtual-dom/hoist-class-names': 'off',
