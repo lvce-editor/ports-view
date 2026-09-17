@@ -2,9 +2,9 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const skip = 1
 
-export const test: Test = async ({ Command, expect, Locator }) => {
-  await Command.execute('Layout.showPanel', 'Ports')
-  const headers = Locator('.PortsTableHeader .PortsTableCell')
+export const test: Test = async ({ expect, Ports }) => {
+  await Ports.open()
+  const headers = Ports.headers()
   await expect(headers).toHaveCount(5)
   const portHeader = headers.nth(1)
   const addressHeader = headers.nth(2)

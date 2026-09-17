@@ -3,6 +3,7 @@ import * as config from '@lvce-editor/eslint-config'
 
 export default defineConfig([
   ...config.default,
+  ...config.recommendedRegex,
   ...config.recommendedVirtualDom,
   ...config.recommendedActions,
   ...config.recommendedE2e,
@@ -18,19 +19,12 @@ export default defineConfig([
     },
   },
   {
-    files: ['packages/ports-view/src/parts/**/*.ts'],
-    ignores: ['packages/ports-view/src/parts/**/*VirtualDom/**/*.ts'],
-    rules: {
-      'virtual-dom/prefer-state-destructuring': 'off',
-    },
-  },
-  {
-    files: ['packages/ports-view/test/**/*.ts'],
     rules: {
       'virtual-dom/no-inline-event-handlers': 'off',
       'virtual-dom/prefer-constants': 'off',
       'virtual-dom/prefer-merge-class-names': 'off',
-      'virtual-dom/prefer-state-destructuring': 'off',
+      'virtual-dom/hoist-class-names': 'off',
+      '@typescript-eslint/no-deprecated': 'off',
     },
   },
 ])

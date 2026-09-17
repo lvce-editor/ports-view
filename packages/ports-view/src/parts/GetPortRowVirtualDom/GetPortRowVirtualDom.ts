@@ -3,6 +3,8 @@ import type { VisiblePort } from '../VisiblePort/VisiblePort.ts'
 import * as AriaRoles from '../AriaRoles/AriaRoles.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as GetPortsStatusVirtualDom from '../GetPortsStatusVirtualDom/GetPortsStatusVirtualDom.ts'
+import * as GetRowClassName from '../GetRowClassName/GetRowClassName.ts'
+import * as GetTextCell from '../GetTextCell/GetTextCell.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const statusCell: VirtualDomNode = {
@@ -12,43 +14,19 @@ const statusCell: VirtualDomNode = {
   type: VirtualDomElements.Div,
 }
 
-const getRowClassName = (port: VisiblePort): string => {
-  let className = ClassNames.PortsTableRow
-  if (port.index % 2 === 1) {
-    className = mergeClassNames(className, ClassNames.PortsTableRowOdd)
-  }
-  if (port.selected) {
-    className = mergeClassNames(className, ClassNames.Focused)
-  }
-  return className
-}
-
-const getTextCell = (value: string, className: string): readonly VirtualDomNode[] => {
-  return [
-    {
-      childCount: 1,
-      className: mergeClassNames(ClassNames.PortsTableCell, className),
-      role: AriaRoles.Cell,
-      title: value,
-      type: VirtualDomElements.Div,
-    },
-    text(value),
-  ]
-}
-
 export const getPortRowVirtualDom = (port: VisiblePort): readonly VirtualDomNode[] => {
   const portText = String(port.port)
   return [
     {
       ariaRowIndex: port.index + 2,
       childCount: 5,
-      className: getRowClassName(port),
+      className: GetRowClassName.getRowClassName(port),
       role: AriaRoles.Row,
       type: VirtualDomElements.Div,
     },
     statusCell,
     ...GetPortsStatusVirtualDom.getPortsStatusVirtualDom(port.active, port.port),
-    ...getTextCell(portText, 'PortsPortColumn'),
+    ...GetTextCell.getTextCell(portText, 'PortsPortColumn'),
     {
       childCount: 1,
       className: mergeClassNames(ClassNames.PortsTableCell, 'PortsAddressColumn'),
@@ -65,7 +43,7 @@ export const getPortRowVirtualDom = (port: VisiblePort): readonly VirtualDomNode
       type: VirtualDomElements.A,
     },
     text(port.forwardedAddress),
-    ...getTextCell(port.runningProcess, 'PortsProcessColumn'),
-    ...getTextCell(port.origin, 'PortsOriginColumn'),
+    ...GetTextCell.getTextCell(port.runningProcess, 'PortsProcessColumn'),
+    ...GetTextCell.getTextCell(port.origin, 'PortsOriginColumn'),
   ]
 }

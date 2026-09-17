@@ -9,15 +9,16 @@ const parsePort = (name: string): number => {
 }
 
 export const handleClick = async (state: PortsState, clientY: number, name: string): Promise<PortsState> => {
+  const { ports } = state
   if (name.startsWith('port-address-')) {
     const portNumber = parsePort(name)
-    const index = state.ports.findIndex((item) => item.port === portNumber)
+    const index = ports.findIndex((item) => item.port === portNumber)
     const focused = index === -1 ? state : FocusIndex.focusIndex(state, index)
     return OpenAddress.openAddress(focused, portNumber)
   }
   if (name.startsWith('port-status-')) {
     const portNumber = parsePort(name)
-    const index = state.ports.findIndex((item) => item.port === portNumber)
+    const index = ports.findIndex((item) => item.port === portNumber)
     const focused = index === -1 ? state : FocusIndex.focusIndex(state, index)
     return TogglePortActive.togglePortActive(focused, portNumber)
   }

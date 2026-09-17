@@ -1,5 +1,8 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 import * as AddPort from '../AddPort/AddPort.ts'
+import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
+
+const PortRegex = /^\d+$/
 
 export const startAddPort = (state: PortsState): PortsState => {
   return {
@@ -28,12 +31,13 @@ export const handleAddPortInput = (state: PortsState, value: string): PortsState
 }
 
 export const submitAddPort = (state: PortsState): PortsState => {
-  const value = state.addPortValue.trim()
+  const { addPortValue } = state
+  const value = addPortValue.trim()
   const port = Number(value)
-  if (!/^\d+$/.test(value) || !Number.isSafeInteger(port) || port < 1 || port > 65_535) {
+  if (!PortRegex.test(value) || !Number.isSafeInteger(port) || port < 1 || port > 65_535) {
     return {
       ...state,
-      addPortError: 'Enter a port number between 1 and 65535',
+      addPortError: PortsStrings.enterAPortNumberBetween1And65535(),
     }
   }
   return {
