@@ -12,7 +12,7 @@ const cancelButton: VirtualDomNode = {
   type: VirtualDomElements.Button,
 }
 
-const getPortInputDOm = (): readonly VirtualDomNode[] => {
+const getPortInputDom = (): readonly VirtualDomNode[] => {
   return [
     {
       ariaLabel: PortsStrings.portNumber(),
@@ -36,7 +36,7 @@ export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
       className: ClassNames.AddPortEditor,
       type: VirtualDomElements.Div,
     },
-    ...getPortInputDOm(),
+    ...getPortInputDom(),
 
     {
       childCount: 1,
