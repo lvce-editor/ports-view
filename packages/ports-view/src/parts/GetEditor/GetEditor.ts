@@ -44,7 +44,7 @@ const getButtonsDom = (): readonly VirtualDomNode[] => {
 }
 
 export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
-  const { addPortError, addPortValue } = statef
+  const { addPortError, addPortValue } = state
   return [
     {
       childCount: addPortError ? 4 : 3,
