@@ -6,6 +6,7 @@ export default defineConfig([
   ...config.recommendedRegex,
   ...config.recommendedVirtualDom,
   ...config.recommendedActions,
+  ...config.recommendedE2e,
   {
     rules: {
       '@cspell/spellchecker': 'off',
