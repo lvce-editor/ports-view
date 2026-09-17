@@ -47,4 +47,3 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
     ...GetTextCell.getTextCell(visiblePort.origin, 'PortsOriginColumn'),
   ]
 }
-f
