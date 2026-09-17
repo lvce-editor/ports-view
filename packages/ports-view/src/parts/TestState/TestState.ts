@@ -1,4 +1,4 @@
-import type { PortsState } from '../src/parts/PortsState/PortsState.ts'
+import type { PortsState } from '../PortsState/PortsState.ts'
 
 export const createTestState = (overrides: Partial<PortsState> = {}): PortsState => {
   return {

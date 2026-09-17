@@ -5,7 +5,7 @@ import { recalculateVirtualList } from '../src/parts/RecalculateVirtualList/Reca
 import { resize } from '../src/parts/Resize/Resize.ts'
 import { setDeltaY } from '../src/parts/SetDeltaY/SetDeltaY.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
-import { createTestState } from './TestState.ts'
+import { createTestState } from '../src/parts/TestState/TestState.ts'
 
 const manyPorts = Array.from({ length: 1000 }, (_, index) => ({ port: index + 1 }))
 

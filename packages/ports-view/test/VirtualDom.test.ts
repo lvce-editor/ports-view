@@ -21,7 +21,7 @@ import { renderEventListeners } from '../src/parts/RenderEventListeners/RenderEv
 import { renderIncremental } from '../src/parts/RenderIncremental/RenderIncremental.ts'
 import { setDeltaY } from '../src/parts/SetDeltaY/SetDeltaY.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
-import { createTestState } from './TestState.ts'
+import { createTestState } from '../src/parts/TestState/TestState.ts'
 
 describe('virtual dom', () => {
   test('renders the five-column table and all requested fields', () => {

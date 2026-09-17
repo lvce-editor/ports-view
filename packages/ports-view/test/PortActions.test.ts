@@ -15,9 +15,9 @@ import { openFocusedAddress } from '../src/parts/OpenFocusedAddress/OpenFocusedA
 import { removeFocusedPort } from '../src/parts/RemoveFocusedPort/RemoveFocusedPort.ts'
 import { removePort } from '../src/parts/RemovePort/RemovePort.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
+import { createTestState } from '../src/parts/TestState/TestState.ts'
 import { toggleFocusedPort } from '../src/parts/ToggleFocusedPort/ToggleFocusedPort.ts'
 import { togglePortActive } from '../src/parts/TogglePortActive/TogglePortActive.ts'
-import { createTestState } from './TestState.ts'
 
 describe('port mutations', () => {
   test('loads, adds, replaces, removes, and toggles ports', async () => {
