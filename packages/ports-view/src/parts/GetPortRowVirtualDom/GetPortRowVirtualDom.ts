@@ -14,18 +14,18 @@ const statusCell: VirtualDomNode = {
   type: VirtualDomElements.Div,
 }
 
-export const getPortRowVirtualDom = (port: VisiblePort): readonly VirtualDomNode[] => {
-  const portText = String(port.port)
+export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly VirtualDomNode[] => {
+  const portText = String(visiblePort.port)
   return [
     {
-      ariaRowIndex: port.index + 2,
+      ariaRowIndex: visiblePort.index + 2,
       childCount: 5,
       className: GetRowClassName.getRowClassName(port),
       role: AriaRoles.Row,
       type: VirtualDomElements.Div,
     },
     statusCell,
-    ...GetPortsStatusVirtualDom.getPortsStatusVirtualDom(port.active, port.port),
+    ...GetPortsStatusVirtualDom.getPortsStatusVirtualDom(visiblePort.active, visiblePort.port),
     ...GetTextCell.getTextCell(portText, 'PortsPortColumn'),
     {
       childCount: 1,
@@ -43,7 +43,7 @@ export const getPortRowVirtualDom = (port: VisiblePort): readonly VirtualDomNode
       type: VirtualDomElements.A,
     },
     text(port.forwardedAddress),
-    ...GetTextCell.getTextCell(port.runningProcess, 'PortsProcessColumn'),
-    ...GetTextCell.getTextCell(port.origin, 'PortsOriginColumn'),
+    ...GetTextCell.getTextCell(visiblePort.runningProcess, 'PortsProcessColumn'),
+    ...GetTextCell.getTextCell(visiblePort.origin, 'PortsOriginColumn'),
   ]
 }
