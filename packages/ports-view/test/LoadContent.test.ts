@@ -2,7 +2,7 @@ import { expect, test } from '@jest/globals'
 import { RendererWorker } from '@lvce-editor/rpc-registry'
 import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
 import * as PortsStates from '../src/parts/PortsStates/PortsStates.ts'
-import { createTestState } from './TestState.ts'
+import { createTestState } from '../src/parts/TestState/TestState.ts'
 
 test('loads port 3000 and its Codespaces forwarded URL from the workspace provider', async () => {
   using rpc = RendererWorker.registerMockRpc({

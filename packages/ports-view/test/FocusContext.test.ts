@@ -7,8 +7,8 @@ import { handleFocus } from '../src/parts/HandleFocus/HandleFocus.ts'
 import * as PortsStates from '../src/parts/PortsStates/PortsStates.ts'
 import { render2 } from '../src/parts/Render2/Render2.ts'
 import { renderFocusContext } from '../src/parts/RenderFocusContext/RenderFocusContext.ts'
+import { createTestState } from '../src/parts/TestState/TestState.ts'
 import * as WhenExpression from '../src/parts/WhenExpression/WhenExpression.ts'
-import { createTestState } from './TestState.ts'
 
 test('enables ports shortcuts when the table receives focus', () => {
   create(88, '', 0, 0, 800, 160, 1, '')
