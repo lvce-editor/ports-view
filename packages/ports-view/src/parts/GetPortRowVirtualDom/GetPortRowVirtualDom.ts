@@ -37,7 +37,7 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
     {
       childCount: 1,
       className: 'PortsAddressLink',
-      name: `port-address-${port.port}`,
+      name: `port-address-${visiblePort.port}`,
       role: AriaRoles.Link,
       tabIndex: TabIndex.Unfocusable,
       type: VirtualDomElements.A,
