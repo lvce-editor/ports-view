@@ -28,15 +28,8 @@ const getPortInputDom = (addPortValue: string): readonly VirtualDomNode[] => {
   ]
 }
 
-export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
-  const { addPortError, addPortValue } = state
+const getButtonsDom = (addPortValue: string): readonly VirtualDomNode[] => {
   return [
-    {
-      childCount: addPortError ? 4 : 3,
-      className: ClassNames.AddPortEditor,
-      type: VirtualDomElements.Div,
-    },
-    ...getPortInputDom(addPortValue),
     {
       childCount: 1,
       className: ClassNames.AddPortButton,
@@ -47,6 +40,19 @@ export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
     text(PortsStrings.add()),
     cancelButton,
     text(PortsStrings.cancel()),
+  ]
+}
+
+export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
+  const { addPortError, addPortValue } = state
+  return [
+    {
+      childCount: addPortError ? 4 : 3,
+      className: ClassNames.AddPortEditor,
+      type: VirtualDomElements.Div,
+    },
+    ...getPortInputDom(addPortValue),
+    ...getButtonsDom(addPortValue),
     ...GetErrorDom.getErrorDom(addPortError),
   ]
 }
