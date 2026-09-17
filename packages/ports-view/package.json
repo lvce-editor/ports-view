@@ -43,11 +43,7 @@
     }
   },
   "devDependencies": {
-
-
     "@lvce-editor/i18n": "^2.10.0",
-
-
     "@jest/globals": "^30.5.1",
     "@lvce-editor/constants": "^5.30.0",
     "@lvce-editor/rpc": "^6.21.0",
@@ -56,6 +52,5 @@
     "@lvce-editor/virtual-dom-worker": "^11.20.1",
     "jest": "^30.5.1",
     "ts-jest": "^29.4.12"
-
   }
 }

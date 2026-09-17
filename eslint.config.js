@@ -18,11 +18,12 @@ export default defineConfig([
     },
   },
   {
-    files: ['packages/ports-view/test/**/*.ts'],
     rules: {
       'virtual-dom/no-inline-event-handlers': 'off',
       'virtual-dom/prefer-constants': 'off',
       'virtual-dom/prefer-merge-class-names': 'off',
+      'virtual-dom/hoist-class-names': 'off',
+      '@typescript-eslint/no-deprecated': 'off',
     },
   },
 ])
