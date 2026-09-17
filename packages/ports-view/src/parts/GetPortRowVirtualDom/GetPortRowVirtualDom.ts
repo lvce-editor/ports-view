@@ -20,7 +20,7 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
     {
       ariaRowIndex: visiblePort.index + 2,
       childCount: 5,
-      className: GetRowClassName.getRowClassName(port),
+      className: GetRowClassName.getRowClassName(visiblePort),
       role: AriaRoles.Row,
       type: VirtualDomElements.Div,
     },
