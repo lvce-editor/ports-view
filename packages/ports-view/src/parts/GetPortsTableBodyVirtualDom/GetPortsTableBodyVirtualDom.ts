@@ -4,6 +4,7 @@ import * as AriaRoles from '../AriaRoles/AriaRoles.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as GetPortRowVirtualDom from '../GetPortRowVirtualDom/GetPortRowVirtualDom.ts'
 import * as GetVisiblePorts from '../GetVisiblePorts/GetVisiblePorts.ts'
+import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
 
 const emptyBody: VirtualDomNode = {
   childCount: 1,
@@ -22,7 +23,7 @@ const emptyMessage: VirtualDomNode = {
 export const getPortsTableBodyVirtualDom = (state: PortsState): readonly VirtualDomNode[] => {
   const { loaded, ports } = state
   if (loaded && ports.length === 0) {
-    return [emptyBody, emptyMessage, text('No forwarded ports')]
+    return [emptyBody, emptyMessage, text(PortsStrings.noForwardedPorts())]
   }
   const visible = GetVisiblePorts.getVisiblePorts(state)
   return [

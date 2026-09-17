@@ -3,6 +3,7 @@ import type { PortsState } from '../PortsState/PortsState.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as GetErrorDom from '../GetErrorDom/GetErrorDom.ts'
+import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
 
 const cancelButton: VirtualDomNode = {
   childCount: 1,
@@ -20,13 +21,13 @@ export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
       type: VirtualDomElements.Div,
     },
     {
-      ariaLabel: 'Port number',
+      ariaLabel: PortsStrings.portNumber(),
       childCount: 0,
       className: ClassNames.AddPortInput,
       inputMode: 'numeric',
       onInput: DomEventListenerFunctions.HandleAddPortInput,
       onKeyDown: DomEventListenerFunctions.HandleAddPortKeyDown,
-      placeholder: 'Port number',
+      placeholder: PortsStrings.portNumber(),
       type: VirtualDomElements.Input,
       value: addPortValue,
     },
@@ -37,9 +38,9 @@ export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
       onClick: DomEventListenerFunctions.HandleSubmitAddPort,
       type: VirtualDomElements.Button,
     },
-    text('Add'),
+    text(PortsStrings.add()),
     cancelButton,
-    text('Cancel'),
+    text(PortsStrings.cancel()),
     ...GetErrorDom.getErrorDom(addPortError),
   ]
 }
