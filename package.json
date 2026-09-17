@@ -4,8 +4,12 @@
   "license": "MIT",
   "type": "module",
   "main": "dist/portsViewWorkerMain.js",
-  "files": ["dist"],
-  "workspaces": ["packages/*"],
+  "files": [
+    "dist"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "node packages/build/src/build.ts",
     "build:static": "node packages/build/src/build-static.ts",
