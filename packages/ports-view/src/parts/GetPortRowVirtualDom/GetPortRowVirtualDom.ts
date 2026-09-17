@@ -31,7 +31,7 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
       childCount: 1,
       className: mergeClassNames(ClassNames.PortsTableCell, 'PortsAddressColumn'),
       role: AriaRoles.Cell,
-      title: port.forwardedAddress,
+      title: visiblePort.forwardedAddress,
       type: VirtualDomElements.Div,
     },
     {
@@ -47,3 +47,4 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
     ...GetTextCell.getTextCell(visiblePort.origin, 'PortsOriginColumn'),
   ]
 }
+f
