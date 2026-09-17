@@ -21,7 +21,7 @@ import { renderEventListeners } from '../src/parts/RenderEventListeners/RenderEv
 import { renderIncremental } from '../src/parts/RenderIncremental/RenderIncremental.ts'
 import { setDeltaY } from '../src/parts/SetDeltaY/SetDeltaY.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
-import { createTestState } from './TestState.ts'
+import { createTestState } from '../src/parts/TestState/TestState.ts'
 
 describe('virtual dom', () => {
   test('renders the five-column table and all requested fields', () => {
@@ -127,7 +127,7 @@ describe('render protocol', () => {
   test('registers interaction event listeners and commands', () => {
     const listeners = renderEventListeners()
     expect(listeners).toHaveLength(9)
-    expect(listeners).toEqual(expect.arrayContaining([expect.objectContaining({ params: ['handleKeyDown', 'event.key'] })]))
+    expect(listeners).toEqual(expect.arrayContaining([expect.objectContaining({ params: ['handleFocus'] })]))
     expect(listeners[1]).toEqual({
       name: DomEventListenerFunctions.HandleAddPortKeyDown,
       params: ['handleAddPortKeyDown', 'event.key'],

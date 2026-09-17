@@ -24,9 +24,8 @@ export const renderEventListeners = (): readonly any[] => {
       params: ['handleClick', EventExpression.ClientY, EventExpression.TargetName],
     },
     {
-      name: DomEventListenerFunctions.HandleKeyDown,
-      params: ['handleKeyDown', EventExpression.Key],
-      preventDefault: true,
+      name: DomEventListenerFunctions.HandleFocus,
+      params: ['handleFocus'],
     },
     {
       name: DomEventListenerFunctions.HandleStartAddPort,

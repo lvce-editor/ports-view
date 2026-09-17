@@ -1,4 +1,4 @@
-import type { PortsState } from '../src/parts/PortsState/PortsState.ts'
+import type { PortsState } from '../PortsState/PortsState.ts'
 
 export const createTestState = (overrides: Partial<PortsState> = {}): PortsState => {
   return {
@@ -7,6 +7,7 @@ export const createTestState = (overrides: Partial<PortsState> = {}): PortsState
     deltaY: 0,
     editing: false,
     finalDeltaY: 0,
+    focused: false,
     focusedIndex: -1,
     footerHeight: 36,
     headerHeight: 28,
