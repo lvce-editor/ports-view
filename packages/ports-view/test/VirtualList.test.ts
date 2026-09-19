@@ -7,7 +7,13 @@ import { setDeltaY } from '../src/parts/SetDeltaY/SetDeltaY.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
 import { createTestState } from '../src/parts/TestState/TestState.ts'
 
-const manyPorts = Array.from({ length: 1000 }, (_, index) => ({ port: index + 1 }))
+const manyPorts = Array.from({ length: 1000 }, (_, index) => ({
+  active: true,
+  forwardedAddress: `localhost:${index + 1}`,
+  origin: 'User Forwarded',
+  port: index + 1,
+  runningProcess: '',
+}))
 
 describe('virtual list', () => {
   test('only exposes enough rows for the viewport', () => {
@@ -68,7 +74,12 @@ describe('focus', () => {
   })
 
   test('moves backward from no selection to the last row', () => {
-    const state = focusPrevious(setPorts(createTestState(), [{ port: 3000 }, { port: 9000 }]))
+    const state = focusPrevious(
+      setPorts(createTestState(), [
+        { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+        { active: true, forwardedAddress: 'localhost:9000', origin: 'User Forwarded', port: 9000, runningProcess: '' },
+      ]),
+    )
     const { focusedIndex } = state
     expect(focusedIndex).toBe(1)
   })

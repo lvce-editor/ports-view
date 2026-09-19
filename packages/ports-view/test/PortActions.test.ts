@@ -22,8 +22,20 @@ import { togglePortActive } from '../src/parts/TogglePortActive/TogglePortActive
 describe('port mutations', () => {
   test('loads, adds, replaces, removes, and toggles ports', async () => {
     const loaded = await loadContent(createTestState({ loaded: false }))
-    const added = addPort(loaded, { port: 9000 })
-    const replaced = addPort(added, { active: false, port: 9000 })
+    const added = addPort(loaded, {
+      active: true,
+      forwardedAddress: 'localhost:9000',
+      origin: 'User Forwarded',
+      port: 9000,
+      runningProcess: '',
+    })
+    const replaced = addPort(added, {
+      active: false,
+      forwardedAddress: 'localhost:9000',
+      origin: 'User Forwarded',
+      port: 9000,
+      runningProcess: '',
+    })
     const toggled = togglePortActive(replaced, 9000)
     const removed = removePort(toggled, 9000)
     expect(loaded.loaded).toBe(true)
@@ -34,7 +46,9 @@ describe('port mutations', () => {
   })
 
   test('ignores unknown toggle and remove targets', () => {
-    const state = setPorts(createTestState(), [{ port: 3000 }])
+    const state = setPorts(createTestState(), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
     const { ports } = state
     expect(togglePortActive(state, 9000).ports).toEqual(ports)
     expect(removePort(state, 9000).ports).toEqual(ports)
@@ -49,7 +63,15 @@ describe('add port editor', () => {
     expect(opened.editing).toBe(true)
     expect(updated.addPortValue).toBe(' 5173 ')
     expect(submitted).toMatchObject({ addPortError: '', addPortValue: '', editing: false })
-    expect(submitted.ports).toEqual([expect.objectContaining({ port: 5173 })])
+    expect(submitted.ports).toEqual([
+      {
+        active: true,
+        forwardedAddress: 'localhost:5173',
+        origin: 'User Forwarded',
+        port: 5173,
+        runningProcess: '',
+      },
+    ])
   })
 
   test.each(['', 'abc', '0', '65536'])('shows validation for %p', (value) => {
@@ -70,7 +92,10 @@ describe('add port editor', () => {
 
 describe('interaction', () => {
   test('selects a row from pointer coordinates and ignores outside clicks', () => {
-    const state = setPorts(createTestState({ y: 10 }), [{ port: 3000 }, { port: 5173 }])
+    const state = setPorts(createTestState({ y: 10 }), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+      { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
+    ])
     expect(handleClickAt(state, 10 + 28 + 25, '').focusedIndex).toBe(1)
     expect(handleClickAt(state, 0, 'port-status-3000').focusedIndex).toBe(0)
     expect(handleClickAt(state, 0, 'port-address-9999')).toBe(state)
@@ -78,7 +103,9 @@ describe('interaction', () => {
   })
 
   test('clicking status selects and toggles a port', async () => {
-    const state = setPorts(createTestState(), [{ port: 3000 }])
+    const state = setPorts(createTestState(), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
     const result = await handleClick(state, 0, 'port-status-3000')
     expect(result.focusedIndex).toBe(0)
     expect(result.ports[0].active).toBe(false)
@@ -86,7 +113,9 @@ describe('interaction', () => {
   })
 
   test('handles unknown addresses and falls back to row selection', async () => {
-    const state = setPorts(createTestState(), [{ port: 3000 }])
+    const state = setPorts(createTestState(), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
     expect(await handleClick(state, 0, 'port-address-9999')).toBe(state)
     expect(await handleClick(state, 28 + 12, '')).toMatchObject({ focusedIndex: 0 })
   })
@@ -101,7 +130,9 @@ describe('interaction', () => {
       'Main.openUri': async (): Promise<void> => {},
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
-    const state = setPorts(createTestState(), [{ forwardedAddress: '127.0.0.1:3000', port: 3000 }])
+    const state = setPorts(createTestState(), [
+      { active: true, forwardedAddress: '127.0.0.1:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
     await openAddress(state, 3000)
     await handleClick(state, 0, 'port-address-3000')
     expect(mockRpc.invocations).toEqual([
@@ -116,12 +147,18 @@ describe('interaction', () => {
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     await openAddress(createTestState(), 3000)
-    await openAddress(setPorts(createTestState(), [{ forwardedAddress: '', port: 3000 }]), 3000)
+    await openAddress(
+      setPorts(createTestState(), [{ active: true, forwardedAddress: '', origin: 'User Forwarded', port: 3000, runningProcess: '' }]),
+      3000,
+    )
     expect(mockRpc.invocations).toEqual([])
   })
 
   test('navigation, activation, deletion, and add commands', () => {
-    const state = setPorts(createTestState(), [{ port: 3000 }, { port: 5173 }])
+    const state = setPorts(createTestState(), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+      { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
+    ])
     const down = focusNext(state)
     const toggled = toggleFocusedPort(down)
     const removed = removeFocusedPort(toggled)
@@ -143,14 +180,21 @@ describe('interaction', () => {
       'Main.openUri': async (): Promise<void> => {},
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
-    const state = setPorts(createTestState({ focusedIndex: 0 }), [{ port: 3000 }])
+    const state = setPorts(createTestState({ focusedIndex: 0 }), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
     await openFocusedAddress(state)
     expect(mockRpc.invocations).toEqual([['Main.openUri', { focus: undefined, uri: 'http://localhost:3000' }]])
   })
 
   test('selected commands ignore editing and absent selection', async () => {
     const empty = createTestState()
-    const editing = { ...setPorts(createTestState({ focusedIndex: 0 }), [{ port: 3000 }]), editing: true }
+    const editing = {
+      ...setPorts(createTestState({ focusedIndex: 0 }), [
+        { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+      ]),
+      editing: true,
+    }
     for (const state of [empty, editing]) {
       expect(await openFocusedAddress(state)).toBe(state)
       expect(toggleFocusedPort(state)).toBe(state)

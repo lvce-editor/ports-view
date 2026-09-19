@@ -5,7 +5,10 @@ export const skip = 1
 
 export const test: Test = async ({ expect, KeyBoard, Ports }) => {
   await Ports.open()
-  await Ports.setPorts([{ port: 3000 }, { port: 5173 }])
+  await Ports.setPorts([
+    { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
+  ])
   const ports = Ports.root()
   // eslint-disable-next-line e2e/no-direct-click -- Focus the table through the Ports page object locator.
   await ports.click()

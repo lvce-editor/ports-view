@@ -41,7 +41,13 @@ export const submitAddPort = (state: PortsState): PortsState => {
     }
   }
   return {
-    ...AddPort.addPort(state, { port }),
+    ...AddPort.addPort(state, {
+      active: true,
+      forwardedAddress: `localhost:${port}`,
+      origin: PortsStrings.userForwarded(),
+      port,
+      runningProcess: '',
+    }),
     addPortError: '',
     addPortValue: '',
     editing: false,
