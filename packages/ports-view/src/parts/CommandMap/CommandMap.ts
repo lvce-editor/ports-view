@@ -6,6 +6,7 @@ import * as Diff2 from '../Diff2/Diff2.ts'
 import * as FocusFirst from '../FocusFirst/FocusFirst.ts'
 import * as FocusIndex from '../FocusIndex/FocusIndex.ts'
 import * as FocusLast from '../FocusLast/FocusLast.ts'
+import * as GetComponentState from '../GetComponentState/GetComponentState.ts'
 import * as GetKeyBindings from '../GetKeyBindings/GetKeyBindings.ts'
 import * as HandleBlur from '../HandleBlur/HandleBlur.ts'
 import * as HandleClick from '../HandleClick/HandleClick.ts'
@@ -20,6 +21,7 @@ import * as RemovePort from '../RemovePort/RemovePort.ts'
 import * as Render2 from '../Render2/Render2.ts'
 import * as RenderEventListeners from '../RenderEventListeners/RenderEventListeners.ts'
 import * as Resize from '../Resize/Resize.ts'
+import * as SetComponentState from '../SetComponentState/SetComponentState.ts'
 import * as SetDeltaY from '../SetDeltaY/SetDeltaY.ts'
 import * as SetPorts from '../SetPorts/SetPorts.ts'
 import * as ToggleFocusedPort from '../ToggleFocusedPort/ToggleFocusedPort.ts'
@@ -37,6 +39,7 @@ export const commandMap = {
   'Ports.focusNext': PortsStates.wrapCommand(FocusIndex.focusNext),
   'Ports.focusPrevious': PortsStates.wrapCommand(FocusIndex.focusPrevious),
   'Ports.getCommandIds': PortsStates.getCommandIds,
+  'Ports.getComponentState': GetComponentState.getComponentState,
   'Ports.getKeyBindings': GetKeyBindings.getKeyBindings,
   'Ports.handleAddPortInput': PortsStates.wrapCommand(AddPortEditor.handleAddPortInput),
   'Ports.handleAddPortKeyDown': PortsStates.wrapCommand(AddPortEditor.handleAddPortKeyDown),
@@ -53,6 +56,7 @@ export const commandMap = {
   'Ports.render2': Render2.render2,
   'Ports.renderEventListeners': RenderEventListeners.renderEventListeners,
   'Ports.resize': PortsStates.wrapCommand(Resize.resize),
+  'Ports.setComponentState': SetComponentState.setComponentState,
   'Ports.setDeltaY': PortsStates.wrapCommand(SetDeltaY.setDeltaY),
   'Ports.setPorts': PortsStates.wrapCommand(SetPorts.setPorts),
   'Ports.startAddPort': PortsStates.wrapCommand(AddPortEditor.startAddPort),

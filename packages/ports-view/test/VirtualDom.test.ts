@@ -135,7 +135,16 @@ describe('render protocol', () => {
       name: DomEventListenerFunctions.HandleAddPortKeyDown,
       params: ['handleAddPortKeyDown', 'event.key'],
     })
-    expect(Object.keys(commandMap)).toEqual(expect.arrayContaining(['Ports.create', 'Ports.setPorts', 'Ports.addPort', 'Ports.removePort']))
+    expect(Object.keys(commandMap)).toEqual(
+      expect.arrayContaining([
+        'Ports.create',
+        'Ports.setPorts',
+        'Ports.addPort',
+        'Ports.removePort',
+        'Ports.getComponentState',
+        'Ports.setComponentState',
+      ]),
+    )
   })
 
   test('creates, diffs, and renders registered view state', () => {
