@@ -104,9 +104,10 @@ describe('virtualization rendering', () => {
   test('css positions partial rows and sizes the table', () => {
     const css = getCss(createTestState({ deltaY: 13 }))
     expect(css).toContain('margin-top: -13px')
-    expect(css).toContain('grid-template-rows: minmax(0, 1fr) 36px')
-    expect(css).toContain('grid-template-rows: 28px minmax(0, 1fr)')
+    expect(css).toContain('flex: 0 0 36px')
+    expect(css).toContain('flex: 0 0 28px')
     expect(css).toContain('height: 24px')
+    expect(css).not.toContain('grid')
   })
 })
 
