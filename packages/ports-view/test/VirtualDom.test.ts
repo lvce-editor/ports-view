@@ -62,7 +62,9 @@ describe('virtual dom', () => {
 
   test('renders empty and populated bodies', () => {
     const empty = getPortsTableBodyVirtualDom(createTestState())
-    const populated = getPortsTableBodyVirtualDom(setPorts(createTestState(), [{ port: 3000 }]))
+    const populated = getPortsTableBodyVirtualDom(
+      setPorts(createTestState(), [{ active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' }]),
+    )
     expect(empty).toEqual(expect.arrayContaining([expect.objectContaining({ text: 'No forwarded ports' })]))
     expect(populated[0]).toMatchObject({ ariaRowCount: 2, childCount: 1, role: 'rowgroup' })
   })
@@ -93,7 +95,13 @@ describe('virtual dom', () => {
 
 describe('virtualization rendering', () => {
   test('renders only visible items from a thousand ports', () => {
-    const ports = Array.from({ length: 1000 }, (_, index) => ({ port: index + 1 }))
+    const ports = Array.from({ length: 1000 }, (_, index) => ({
+      active: true,
+      forwardedAddress: `localhost:${index + 1}`,
+      origin: 'User Forwarded',
+      port: index + 1,
+      runningProcess: '',
+    }))
     const state = setDeltaY(setPorts(createTestState(), ports), 12_000)
     const visible = getVisiblePorts(state)
     expect(visible).toHaveLength(5)
@@ -114,7 +122,9 @@ describe('virtualization rendering', () => {
 describe('render protocol', () => {
   test('emits dom, css, and patches commands', () => {
     const oldState = createTestState({ loaded: false })
-    const newState = setPorts(createTestState(), [{ port: 3000 }])
+    const newState = setPorts(createTestState(), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
     expect(renderDom(oldState, newState)[0]).toBe(ViewletCommand.SetDom2)
     expect(renderCss(oldState, newState)).toEqual([ViewletCommand.SetCss, 1, getCss(newState)])
     expect(renderIncremental(oldState, newState)[0]).toBe(ViewletCommand.SetPatches)

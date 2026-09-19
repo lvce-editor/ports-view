@@ -4,7 +4,10 @@ export const skip = 1
 
 export const test: Test = async ({ expect, Ports }) => {
   await Ports.open()
-  await Ports.setPorts([{ port: 3000 }, { port: 5173 }])
+  await Ports.setPorts([
+    { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
+  ])
   await Ports.removePort(3000)
   const rows = Ports.rows()
   await expect(rows).toHaveCount(1)
