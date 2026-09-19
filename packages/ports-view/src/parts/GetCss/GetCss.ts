@@ -4,11 +4,19 @@ export const getCss = (state: PortsState): string => {
   const { deltaY, footerHeight, headerHeight, itemHeight } = state
   const relativeY = -(deltaY % itemHeight)
   return `.Ports {
-  grid-template-rows: minmax(0, 1fr) ${footerHeight}px;
+  flex: 1 1 auto;
 }
 
 .PortsTable {
-  grid-template-rows: ${headerHeight}px minmax(0, 1fr);
+  flex: 1 1 auto;
+}
+
+.PortsTableHeader {
+  flex: 0 0 ${headerHeight}px;
+}
+
+.PortsFooter {
+  flex: 0 0 ${footerHeight}px;
 }
 
 .PortsTableBody > .PortsTableRow:first-child {
