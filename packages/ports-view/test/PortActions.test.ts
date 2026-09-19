@@ -85,6 +85,12 @@ describe('interaction', () => {
     expect(await handleClick(state, 0, 'port-status-9999')).not.toBe(state)
   })
 
+  test('handles unknown addresses and falls back to row selection', async () => {
+    const state = setPorts(createTestState(), [{ port: 3000 }])
+    expect(await handleClick(state, 0, 'port-address-9999')).toBe(state)
+    expect(await handleClick(state, 28 + 12, '')).toMatchObject({ focusedIndex: 0 })
+  })
+
   test('address utilities preserve and add schemes', () => {
     expect(getAddressUrl('localhost:3000')).toBe('http://localhost:3000')
     expect(getAddressUrl('https://example.com')).toBe('https://example.com')

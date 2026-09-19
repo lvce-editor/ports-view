@@ -69,6 +69,9 @@ describe('virtual dom', () => {
 
   test('renders add button, editor, and validation', () => {
     expect(getPortsFooterVirtualDom(createTestState())).toEqual(expect.arrayContaining([expect.objectContaining({ text: 'Add Port' })]))
+    const emptyEditor = getPortsFooterVirtualDom(createTestState({ editing: true }))
+    expect(emptyEditor).toEqual(expect.arrayContaining([expect.objectContaining({ ariaLabel: 'Port number', value: '' })]))
+    expect(emptyEditor).not.toEqual(expect.arrayContaining([expect.objectContaining({ role: 'alert' })]))
     const editor = getPortsFooterVirtualDom(createTestState({ addPortError: 'Invalid', addPortValue: '0', editing: true }))
     expect(editor).toEqual(expect.arrayContaining([expect.objectContaining({ ariaLabel: 'Port number', value: '0' })]))
     expect(editor).toEqual(expect.arrayContaining([expect.objectContaining({ role: 'alert' }), expect.objectContaining({ text: 'Invalid' })]))
