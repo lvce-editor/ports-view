@@ -12,4 +12,7 @@ export const test: Test = async ({ expect, Ports }) => {
   await Ports.setPorts(ports)
   await Ports.setDeltaY(12_000)
   await expect(Ports.portCell(0)).toHaveText('501')
+  // eslint-disable-next-line e2e/no-direct-click -- Exercise the status control in the scrolled row.
+  await Ports.statusButton(0).click()
+  await expect(Ports.statusButton(0)).toHaveAttribute('aria-label', 'Port 501 is inactive')
 }
