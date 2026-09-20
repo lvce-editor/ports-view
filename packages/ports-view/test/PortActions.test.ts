@@ -14,6 +14,7 @@ import { openAddress } from '../src/parts/OpenAddress/OpenAddress.ts'
 import { openFocusedAddress } from '../src/parts/OpenFocusedAddress/OpenFocusedAddress.ts'
 import { removeFocusedPort } from '../src/parts/RemoveFocusedPort/RemoveFocusedPort.ts'
 import { removePort } from '../src/parts/RemovePort/RemovePort.ts'
+import { setDeltaY } from '../src/parts/SetDeltaY/SetDeltaY.ts'
 import { setPorts } from '../src/parts/SetPorts/SetPorts.ts'
 import { createTestState } from '../src/parts/TestState/TestState.ts'
 import { toggleFocusedPort } from '../src/parts/ToggleFocusedPort/ToggleFocusedPort.ts'
@@ -96,28 +97,54 @@ describe('interaction', () => {
       { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
       { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
     ])
-    expect(handleClickAt(state, 10 + 28 + 25, '').focusedIndex).toBe(1)
-    expect(handleClickAt(state, 0, 'port-status-3000').focusedIndex).toBe(0)
-    expect(handleClickAt(state, 0, 'port-address-9999')).toBe(state)
-    expect(handleClickAt(state, 0, '')).toBe(state)
+    expect(handleClickAt(state, 10 + 28 + 25).focusedIndex).toBe(1)
+    expect(handleClickAt(state, 10 + 28).focusedIndex).toBe(0)
+    const { listHeight } = state
+    expect(handleClickAt(state, 10 + 28 + listHeight)).toBe(state)
+    expect(handleClickAt(state, 0)).toBe(state)
   })
 
   test('clicking status selects and toggles a port', async () => {
     const state = setPorts(createTestState(), [
       { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+      { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
     ])
-    const result = await handleClick(state, 0, 'port-status-3000')
-    expect(result.focusedIndex).toBe(0)
-    expect(result.ports[0].active).toBe(false)
-    expect(await handleClick(state, 0, 'port-status-9999')).not.toBe(state)
+    const result = await handleClick(state, 28 + 24 + 1, 'port-status-3000')
+    expect(result.focusedIndex).toBe(1)
+    expect(result.ports[0].active).toBe(true)
+    expect(result.ports[1].active).toBe(false)
+    expect(await handleClick(state, 28 + 1, '')).toMatchObject({ focusedIndex: 0 })
+    expect(await handleClick(state, 0, 'port-status-9999')).toBe(state)
   })
 
-  test('handles unknown addresses and falls back to row selection', async () => {
+  test('opens the address from the clicked row', async () => {
+    const commandMap = {
+      'Main.openUri': async (): Promise<void> => {},
+    }
+    using mockRpc = RendererWorker.registerMockRpc(commandMap)
     const state = setPorts(createTestState(), [
       { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+      { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
     ])
-    expect(await handleClick(state, 0, 'port-address-9999')).toBe(state)
-    expect(await handleClick(state, 28 + 12, '')).toMatchObject({ focusedIndex: 0 })
+    const result = await handleClick(state, 28 + 24 + 1, 'port-address-3000')
+    expect(result.focusedIndex).toBe(1)
+    expect(mockRpc.invocations).toEqual([['Main.openUri', { focus: undefined, uri: 'http://localhost:5173' }]])
+  })
+
+  test('uses scrolled coordinates for row actions', async () => {
+    const state = setDeltaY(
+      setPorts(createTestState(), [
+        { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+        { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
+        { active: true, forwardedAddress: 'localhost:9000', origin: 'User Forwarded', port: 9000, runningProcess: '' },
+      ]),
+      13,
+    )
+    expect(handleClickAt(state, 28 + 24).focusedIndex).toBe(1)
+    const result = await handleClick(state, 28 + 24, 'port-status-3000')
+    expect(result.focusedIndex).toBe(1)
+    expect(result.ports[0].active).toBe(true)
+    expect(result.ports[1].active).toBe(false)
   })
 
   test('address utilities preserve and add schemes', () => {
@@ -134,7 +161,7 @@ describe('interaction', () => {
       { active: true, forwardedAddress: '127.0.0.1:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
     ])
     await openAddress(state, 3000)
-    await handleClick(state, 0, 'port-address-3000')
+    await handleClick(state, 28 + 1, 'port-address-3000')
     expect(mockRpc.invocations).toEqual([
       ['Main.openUri', { focus: undefined, uri: 'http://127.0.0.1:3000' }],
       ['Main.openUri', { focus: undefined, uri: 'http://127.0.0.1:3000' }],

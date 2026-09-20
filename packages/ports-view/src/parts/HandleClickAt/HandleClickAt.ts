@@ -1,16 +1,22 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 import * as FocusIndex from '../FocusIndex/FocusIndex.ts'
 
-export const handleClickAt = (state: PortsState, clientY: number, name: string): PortsState => {
-  const { deltaY, headerHeight, itemHeight, minLineY, ports, y } = state
-  if (name.startsWith('port-address-') || name.startsWith('port-status-')) {
-    const port = Number(name.slice(name.lastIndexOf('-') + 1))
-    const index = ports.findIndex((item) => item.port === port)
-    return index === -1 ? state : FocusIndex.focusIndex(state, index)
-  }
+export const getIndexAt = (state: PortsState, clientY: number): number => {
+  const { deltaY, headerHeight, itemHeight, listHeight, minLineY, ports, y } = state
   const relativeY = clientY - y - headerHeight
+  if (itemHeight <= 0 || relativeY < 0 || relativeY >= listHeight) {
+    return -1
+  }
   const index = minLineY + Math.floor((relativeY + (deltaY % itemHeight)) / itemHeight)
-  if (relativeY < 0 || index < 0 || index >= ports.length) {
+  if (index < 0 || index >= ports.length) {
+    return -1
+  }
+  return index
+}
+
+export const handleClickAt = (state: PortsState, clientY: number): PortsState => {
+  const index = getIndexAt(state, clientY)
+  if (index === -1) {
     return state
   }
   return FocusIndex.focusIndex(state, index)
