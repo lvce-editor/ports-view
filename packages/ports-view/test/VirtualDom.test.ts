@@ -60,6 +60,33 @@ describe('virtual dom', () => {
     expect(dom[0]).toMatchObject({ className: 'PortsTableRow PortsTableRowOdd Focused', role: 'row' })
   })
 
+  test('uses the shared class for every table column', () => {
+    const header = getPortsTableHeaderVirtualDom()
+    const row = getPortRowVirtualDom({
+      active: true,
+      forwardedAddress: 'localhost:3000',
+      index: 0,
+      origin: 'User Forwarded',
+      port: 3000,
+      runningProcess: 'node',
+      selected: false,
+    })
+    expect(header.filter((node) => node.role === 'columnheader').map((node) => node.className)).toEqual([
+      'PortsColumn',
+      'PortsColumn',
+      'PortsColumn',
+      'PortsColumn',
+      'PortsColumn',
+    ])
+    expect(row.filter((node) => node.role === 'cell').map((node) => node.className)).toEqual([
+      'PortsColumn',
+      'PortsColumn',
+      'PortsColumn',
+      'PortsColumn',
+      'PortsColumn',
+    ])
+  })
+
   test('renders empty and populated bodies', () => {
     const empty = getPortsTableBodyVirtualDom(createTestState())
     const populated = getPortsTableBodyVirtualDom(
