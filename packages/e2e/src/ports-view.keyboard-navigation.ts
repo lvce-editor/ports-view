@@ -1,8 +1,7 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
-// Requires the Ports.getKeyBindings worker configuration in the packaged test app.
+// Requires the Ports.getKeyBindings worker configuration and a focus-capable Ports page-object action in the test app. The current test-worker Locator.click() dispatches a click but leaves document.body active, and it does not expose Locator.focus().
 export const skip = 1
-
 export const test: Test = async ({ expect, KeyBoard, Ports }) => {
   await Ports.open()
   await Ports.setPorts([
