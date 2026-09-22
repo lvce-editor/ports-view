@@ -1,6 +1,7 @@
 import { terminate } from '@lvce-editor/viewlet-registry'
 import * as AddPort from '../AddPort/AddPort.ts'
 import * as AddPortEditor from '../AddPortEditor/AddPortEditor.ts'
+import * as CopyLink from '../CopyLink/CopyLink.ts'
 import * as Create from '../Create/Create.ts'
 import * as Diff2 from '../Diff2/Diff2.ts'
 import * as FocusFirst from '../FocusFirst/FocusFirst.ts'
@@ -8,8 +9,11 @@ import * as FocusIndex from '../FocusIndex/FocusIndex.ts'
 import * as FocusLast from '../FocusLast/FocusLast.ts'
 import * as GetComponentState from '../GetComponentState/GetComponentState.ts'
 import * as GetKeyBindings from '../GetKeyBindings/GetKeyBindings.ts'
+import * as GetMenuEntries2 from '../GetMenuEntries2/GetMenuEntries2.ts'
+import * as GetMenuIds from '../GetMenuIds/GetMenuIds.ts'
 import * as HandleBlur from '../HandleBlur/HandleBlur.ts'
 import * as HandleClick from '../HandleClick/HandleClick.ts'
+import * as HandleContextMenu from '../HandleContextMenu/HandleContextMenu.ts'
 import * as HandleFocus from '../HandleFocus/HandleFocus.ts'
 import * as HandleWheel from '../HandleWheel/HandleWheel.ts'
 import * as LoadContent from '../LoadContent/LoadContent.ts'
@@ -30,6 +34,7 @@ import * as TogglePortActive from '../TogglePortActive/TogglePortActive.ts'
 export const commandMap = {
   'Ports.addPort': PortsStates.wrapCommand(AddPort.addPort),
   'Ports.cancelAddPort': PortsStates.wrapCommand(AddPortEditor.cancelAddPort),
+  'Ports.copyLink': PortsStates.wrapCommand(CopyLink.copyLink),
   'Ports.create': Create.create,
   'Ports.diff2': Diff2.diff2,
   'Ports.dispose': PortsStates.dispose,
@@ -41,10 +46,13 @@ export const commandMap = {
   'Ports.getCommandIds': PortsStates.getCommandIds,
   'Ports.getComponentState': GetComponentState.getComponentState,
   'Ports.getKeyBindings': GetKeyBindings.getKeyBindings,
+  'Ports.getMenuEntries2': PortsStates.wrapGetter(GetMenuEntries2.getMenuEntries2),
+  'Ports.getMenuIds': GetMenuIds.getMenuIds,
   'Ports.handleAddPortInput': PortsStates.wrapCommand(AddPortEditor.handleAddPortInput),
   'Ports.handleAddPortKeyDown': PortsStates.wrapCommand(AddPortEditor.handleAddPortKeyDown),
   'Ports.handleBlur': PortsStates.wrapCommand(HandleBlur.handleBlur),
   'Ports.handleClick': PortsStates.wrapCommand(HandleClick.handleClick),
+  'Ports.handleContextMenu': PortsStates.wrapCommand(HandleContextMenu.handleContextMenu),
   'Ports.handleFocus': PortsStates.wrapCommand(HandleFocus.handleFocus),
   'Ports.handleWheel': PortsStates.wrapCommand(HandleWheel.handleWheel),
   'Ports.handleWorkspaceChange': PortsStates.wrapCommand(LoadContent.loadContent),

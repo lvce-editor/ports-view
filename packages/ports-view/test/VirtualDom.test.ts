@@ -36,6 +36,7 @@ describe('virtual dom', () => {
     ])
     const dom = getPortsVirtualDom(state)
     expect(dom[0]).toMatchObject({ ariaLabel: 'Ports', childCount: 2, className: 'Viewlet Ports', role: 'table', tabIndex: 0 })
+    expect(dom[0]).toHaveProperty('onContextMenu', DomEventListenerFunctions.HandleContextMenu)
     expect(dom).toEqual(expect.arrayContaining([expect.objectContaining({ text: 'Forwarded Address' }), expect.objectContaining({ text: 'vite' })]))
     expect(dom).toEqual(
       expect.arrayContaining([expect.objectContaining({ text: 'Auto Forwarded' }), expect.objectContaining({ text: 'localhost:5173' })]),
@@ -167,12 +168,21 @@ describe('render protocol', () => {
 
   test('registers interaction event listeners and commands', () => {
     const listeners = renderEventListeners()
-    expect(listeners).toHaveLength(9)
+    expect(listeners).toHaveLength(10)
     expect(listeners).toEqual(expect.arrayContaining([expect.objectContaining({ params: ['handleFocus'] })]))
     expect(listeners[1]).toEqual({
       name: DomEventListenerFunctions.HandleAddPortKeyDown,
       params: ['handleAddPortKeyDown', 'event.key'],
     })
+    expect(listeners).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: DomEventListenerFunctions.HandleContextMenu,
+          params: ['handleContextMenu', 'event.clientX', 'event.clientY', 'event.target.name'],
+          preventDefault: true,
+        }),
+      ]),
+    )
     expect(Object.keys(commandMap)).toEqual(
       expect.arrayContaining([
         'Ports.create',
@@ -181,6 +191,10 @@ describe('render protocol', () => {
         'Ports.removePort',
         'Ports.getComponentState',
         'Ports.setComponentState',
+        'Ports.copyLink',
+        'Ports.getMenuIds',
+        'Ports.getMenuEntries2',
+        'Ports.handleContextMenu',
       ]),
     )
   })

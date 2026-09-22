@@ -25,6 +25,7 @@ export const getPortsVirtualDom = (state: PortsState): readonly VirtualDomNode[]
       className: mergeClassNames(ClassNames.Viewlet, ClassNames.Ports),
       onBlur: DomEventListenerFunctions.HandleBlur,
       onClick: DomEventListenerFunctions.HandleClick,
+      onContextMenu: DomEventListenerFunctions.HandleContextMenu,
       onFocus: DomEventListenerFunctions.HandleFocus,
       onWheel: DomEventListenerFunctions.HandleWheel,
       role: AriaRoles.Table,

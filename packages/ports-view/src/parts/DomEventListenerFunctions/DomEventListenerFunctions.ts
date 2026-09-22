@@ -7,3 +7,4 @@ export const HandleFocus = 6
 export const HandleStartAddPort = 7
 export const HandleSubmitAddPort = 8
 export const HandleWheel = 9
+export const HandleContextMenu = 10
