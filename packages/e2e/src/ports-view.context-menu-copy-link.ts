@@ -1,5 +1,8 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
+// The integrated Ports menu is registered by the lvce-editor consumer and becomes available after its dependency release.
+export const skip = 1
+
 export const test: Test = async ({ ClipBoard, ContextMenu, expect, Locator, Ports }) => {
   await ClipBoard.enableMemoryClipBoard()
   await Ports.open()
