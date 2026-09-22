@@ -13,6 +13,10 @@ export const cancel = (): string => {
   return I18nString.i18nString(UiStrings.Cancel)
 }
 
+export const copyLink = (): string => {
+  return I18nString.i18nString(UiStrings.CopyLink)
+}
+
 export const enterAPortNumberBetween1And65535 = (): string => {
   return I18nString.i18nString(UiStrings.EnterAPortNumberBetween1And65535)
 }
