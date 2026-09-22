@@ -119,7 +119,8 @@ describe('interaction', () => {
 
   test('opens the address from the clicked row', async () => {
     const commandMap = {
-      'Main.openUri': async (): Promise<void> => {},
+      'Layout.showPreview': async (): Promise<void> => {},
+      'SimpleBrowser.openOrRevealTab': async (): Promise<void> => {},
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     const state = setPorts(createTestState(), [
@@ -128,7 +129,10 @@ describe('interaction', () => {
     ])
     const result = await handleClick(state, 28 + 24 + 1, 'port-address-3000')
     expect(result.focusedIndex).toBe(1)
-    expect(mockRpc.invocations).toEqual([['Main.openUri', { focus: undefined, uri: 'http://localhost:5173' }]])
+    expect(mockRpc.invocations).toEqual([
+      ['Layout.showPreview', 'simple-browser://'],
+      ['SimpleBrowser.openOrRevealTab', 'http://localhost:5173'],
+    ])
   })
 
   test('uses scrolled coordinates for row actions', async () => {
@@ -154,7 +158,8 @@ describe('interaction', () => {
 
   test('opens forwarded addresses', async () => {
     const commandMap = {
-      'Main.openUri': async (): Promise<void> => {},
+      'Layout.showPreview': async (): Promise<void> => {},
+      'SimpleBrowser.openOrRevealTab': async (): Promise<void> => {},
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     const state = setPorts(createTestState(), [
@@ -163,14 +168,17 @@ describe('interaction', () => {
     await openAddress(state, 3000)
     await handleClick(state, 28 + 1, 'port-address-3000')
     expect(mockRpc.invocations).toEqual([
-      ['Main.openUri', { focus: undefined, uri: 'http://127.0.0.1:3000' }],
-      ['Main.openUri', { focus: undefined, uri: 'http://127.0.0.1:3000' }],
+      ['Layout.showPreview', 'simple-browser://'],
+      ['SimpleBrowser.openOrRevealTab', 'http://127.0.0.1:3000'],
+      ['Layout.showPreview', 'simple-browser://'],
+      ['SimpleBrowser.openOrRevealTab', 'http://127.0.0.1:3000'],
     ])
   })
 
   test('does not open unknown or empty addresses', async () => {
     const commandMap = {
-      'Main.openUri': async (): Promise<void> => {},
+      'Layout.showPreview': async (): Promise<void> => {},
+      'SimpleBrowser.openOrRevealTab': async (): Promise<void> => {},
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     await openAddress(createTestState(), 3000)
@@ -204,14 +212,18 @@ describe('interaction', () => {
 
   test('enter opens the selected address', async () => {
     const commandMap = {
-      'Main.openUri': async (): Promise<void> => {},
+      'Layout.showPreview': async (): Promise<void> => {},
+      'SimpleBrowser.openOrRevealTab': async (): Promise<void> => {},
     }
     using mockRpc = RendererWorker.registerMockRpc(commandMap)
     const state = setPorts(createTestState({ focusedIndex: 0 }), [
       { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
     ])
     await openFocusedAddress(state)
-    expect(mockRpc.invocations).toEqual([['Main.openUri', { focus: undefined, uri: 'http://localhost:3000' }]])
+    expect(mockRpc.invocations).toEqual([
+      ['Layout.showPreview', 'simple-browser://'],
+      ['SimpleBrowser.openOrRevealTab', 'http://localhost:3000'],
+    ])
   })
 
   test('selected commands ignore editing and absent selection', async () => {
