@@ -43,7 +43,7 @@ describe('port mutations', () => {
     expect(added.ports).toHaveLength(1)
     expect(replaced.ports).toEqual([expect.objectContaining({ active: false, port: 9000 })])
     expect(toggled.ports).toEqual([expect.objectContaining({ active: true, port: 9000 })])
-    expect(toggled.visiblePorts).toEqual([expect.objectContaining({ active: true, port: 9000, index: 0, selected: false })])
+    expect(toggled.visiblePorts).toEqual([expect.objectContaining({ active: true, index: 0, port: 9000, selected: false })])
     expect(removed.ports).toEqual([])
   })
 

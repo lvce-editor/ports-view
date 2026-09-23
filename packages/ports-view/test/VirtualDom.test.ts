@@ -130,7 +130,8 @@ describe('virtualization rendering', () => {
       runningProcess: '',
     }))
     const state = setDeltaY(setPorts(createTestState(), ports), 12_000)
-    const visible = state.visiblePorts
+    const { visiblePorts } = state
+    const visible = visiblePorts
     expect(visible).toHaveLength(5)
     expect(visible[0].port).toBe(501)
     expect(getPortsTableBodyVirtualDom(state)[0]).toMatchObject({ ariaRowCount: 1001, childCount: 5 })
@@ -140,7 +141,8 @@ describe('virtualization rendering', () => {
     const state = setPorts(createTestState(), [
       { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
     ])
-    const visiblePorts = [{ ...state.visiblePorts[0], forwardedAddress: 'localhost:9000', port: 9000 }]
+    const { visiblePorts: stateVisiblePorts } = state
+    const visiblePorts = [{ ...stateVisiblePorts[0], forwardedAddress: 'localhost:9000', port: 9000 }]
     const body = getPortsTableBodyVirtualDom({ ...state, visiblePorts })
     expect(body).toEqual(expect.arrayContaining([expect.objectContaining({ text: 'localhost:9000' })]))
     expect(body).not.toEqual(expect.arrayContaining([expect.objectContaining({ text: 'localhost:3000' })]))

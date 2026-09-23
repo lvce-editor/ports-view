@@ -23,7 +23,8 @@ describe('virtual list', () => {
     expect(maxLineY).toBe(5)
     expect(finalDeltaY).toBe(23_904)
     expect(scrollBarHeight).toBe(20)
-    expect(state.visiblePorts.map(({ index }) => index)).toEqual([0, 1, 2, 3, 4])
+    const { visiblePorts } = state
+    expect(visiblePorts.map(({ index }) => index)).toEqual([0, 1, 2, 3, 4])
   })
 
   test('calculates a middle range', () => {
@@ -32,7 +33,8 @@ describe('virtual list', () => {
     expect(minLineY).toBe(500)
     expect(maxLineY).toBe(505)
     expect(scrollBarY).toBeGreaterThan(0)
-    expect(state.visiblePorts.map(({ port, index }) => [port, index])).toEqual([
+    const { visiblePorts } = state
+    expect(visiblePorts.map(({ index, port }) => [port, index])).toEqual([
       [501, 500],
       [502, 501],
       [503, 502],
@@ -51,7 +53,8 @@ describe('virtual list', () => {
   test('handles empty and zero-height lists', () => {
     const state = recalculateVirtualList(createTestState({ height: 64, itemHeight: 0 }))
     expect(state).toMatchObject({ deltaY: 0, listHeight: 0, maxLineY: 0, minLineY: 0, scrollBarHeight: 0 })
-    expect(state.visiblePorts).toEqual([])
+    const { visiblePorts } = state
+    expect(visiblePorts).toEqual([])
   })
 
   test('refreshes visible row data and selection after port and focus changes', () => {
