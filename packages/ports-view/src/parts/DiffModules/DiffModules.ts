@@ -1,7 +1,7 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 
 export const isFocusContextEqual = (oldState: PortsState, newState: PortsState): boolean => {
-  return oldState.focused === newState.focused && oldState.editing === newState.editing
+  return oldState.focused === newState.focused
 }
 
 export const isDomEqual = (oldState: PortsState, newState: PortsState): boolean => {
@@ -27,4 +27,8 @@ export const isCssEqual = (oldState: PortsState, newState: PortsState): boolean 
     oldState.itemHeight === newState.itemHeight &&
     oldState.width === newState.width
   )
+}
+
+export const isEditingEqual = (oldState: PortsState, newState: PortsState): boolean => {
+  return oldState.editing === newState.editing
 }

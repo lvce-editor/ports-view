@@ -20,7 +20,6 @@ const getPortInputDom = (addPortValue: string): readonly VirtualDomNode[] => {
       className: ClassNames.AddPortInput,
       inputMode: 'numeric',
       onInput: DomEventListenerFunctions.HandleAddPortInput,
-      onKeyDown: DomEventListenerFunctions.HandleAddPortKeyDown,
       placeholder: PortsStrings.portNumber(),
       type: VirtualDomElements.Input,
       value: addPortValue,
