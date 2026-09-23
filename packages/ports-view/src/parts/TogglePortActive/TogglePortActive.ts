@@ -1,8 +1,9 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
+import * as GetVisiblePorts from '../GetVisiblePorts/GetVisiblePorts.ts'
 
 export const togglePortActive = (state: PortsState, portNumber: number): PortsState => {
   const { ports } = state
-  return {
+  const updated: PortsState = {
     ...state,
     ports: ports.map((item) => {
       if (item.port !== portNumber) {
@@ -13,5 +14,9 @@ export const togglePortActive = (state: PortsState, portNumber: number): PortsSt
         active: !item.active,
       }
     }),
+  }
+  return {
+    ...updated,
+    visiblePorts: GetVisiblePorts.getVisiblePorts(updated),
   }
 }

@@ -12,7 +12,6 @@ import { getPortsStatusVirtualDom } from '../src/parts/GetPortsStatusVirtualDom/
 import { getPortsTableBodyVirtualDom } from '../src/parts/GetPortsTableBodyVirtualDom/GetPortsTableBodyVirtualDom.ts'
 import { getPortsTableHeaderVirtualDom } from '../src/parts/GetPortsTableHeaderVirtualDom/GetPortsTableHeaderVirtualDom.ts'
 import { getPortsVirtualDom } from '../src/parts/GetPortsVirtualDom/GetPortsVirtualDom.ts'
-import { getVisiblePorts } from '../src/parts/GetVisiblePorts/GetVisiblePorts.ts'
 import * as PortsStates from '../src/parts/PortsStates/PortsStates.ts'
 import { render2 } from '../src/parts/Render2/Render2.ts'
 import { renderCss } from '../src/parts/RenderCss/RenderCss.ts'
@@ -131,10 +130,22 @@ describe('virtualization rendering', () => {
       runningProcess: '',
     }))
     const state = setDeltaY(setPorts(createTestState(), ports), 12_000)
-    const visible = getVisiblePorts(state)
+    const { visiblePorts } = state
+    const visible = visiblePorts
     expect(visible).toHaveLength(5)
     expect(visible[0].port).toBe(501)
     expect(getPortsTableBodyVirtualDom(state)[0]).toMatchObject({ ariaRowCount: 1001, childCount: 5 })
+  })
+
+  test('renders the stored visible rows', () => {
+    const state = setPorts(createTestState(), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    ])
+    const { visiblePorts: stateVisiblePorts } = state
+    const visiblePorts = [{ ...stateVisiblePorts[0], forwardedAddress: 'localhost:9000', port: 9000 }]
+    const body = getPortsTableBodyVirtualDom({ ...state, visiblePorts })
+    expect(body).toEqual(expect.arrayContaining([expect.objectContaining({ text: 'localhost:9000' })]))
+    expect(body).not.toEqual(expect.arrayContaining([expect.objectContaining({ text: 'localhost:3000' })]))
   })
 
   test('css positions partial rows and sizes the table', () => {
