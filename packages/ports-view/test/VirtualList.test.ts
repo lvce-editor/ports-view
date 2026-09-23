@@ -23,6 +23,7 @@ describe('virtual list', () => {
     expect(maxLineY).toBe(5)
     expect(finalDeltaY).toBe(23_904)
     expect(scrollBarHeight).toBe(20)
+    expect(state.visiblePorts.map(({ index }) => index)).toEqual([0, 1, 2, 3, 4])
   })
 
   test('calculates a middle range', () => {
@@ -31,6 +32,13 @@ describe('virtual list', () => {
     expect(minLineY).toBe(500)
     expect(maxLineY).toBe(505)
     expect(scrollBarY).toBeGreaterThan(0)
+    expect(state.visiblePorts.map(({ port, index }) => [port, index])).toEqual([
+      [501, 500],
+      [502, 501],
+      [503, 502],
+      [504, 503],
+      [505, 504],
+    ])
   })
 
   test('clamps overscroll', () => {
@@ -43,6 +51,15 @@ describe('virtual list', () => {
   test('handles empty and zero-height lists', () => {
     const state = recalculateVirtualList(createTestState({ height: 64, itemHeight: 0 }))
     expect(state).toMatchObject({ deltaY: 0, listHeight: 0, maxLineY: 0, minLineY: 0, scrollBarHeight: 0 })
+    expect(state.visiblePorts).toEqual([])
+  })
+
+  test('refreshes visible row data and selection after port and focus changes', () => {
+    const loaded = setPorts(createTestState(), manyPorts)
+    const focused = focusIndex(loaded, 2)
+    expect(focused.visiblePorts[2]).toMatchObject({ index: 2, port: 3, selected: true })
+    const replaced = setPorts(focused, [{ ...manyPorts[2], active: false }])
+    expect(replaced.visiblePorts).toEqual([{ ...manyPorts[2], active: false, index: 0, selected: true }])
   })
 
   test('wheel supports pixel and line modes', () => {

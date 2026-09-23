@@ -43,6 +43,7 @@ describe('port mutations', () => {
     expect(added.ports).toHaveLength(1)
     expect(replaced.ports).toEqual([expect.objectContaining({ active: false, port: 9000 })])
     expect(toggled.ports).toEqual([expect.objectContaining({ active: true, port: 9000 })])
+    expect(toggled.visiblePorts).toEqual([expect.objectContaining({ active: true, port: 9000, index: 0, selected: false })])
     expect(removed.ports).toEqual([])
   })
 
@@ -240,6 +241,13 @@ describe('interaction', () => {
   })
 
   test('blur clears table focus and selection', () => {
-    expect(handleBlur(createTestState({ focused: true, focusedIndex: 2 }))).toMatchObject({ focused: false, focusedIndex: -1 })
+    const state = setPorts(createTestState({ focused: true, focusedIndex: 2 }), [
+      { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+      { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
+      { active: true, forwardedAddress: 'localhost:9000', origin: 'User Forwarded', port: 9000, runningProcess: '' },
+    ])
+    const blurred = handleBlur(state)
+    expect(blurred).toMatchObject({ focused: false, focusedIndex: -1 })
+    expect(blurred.visiblePorts.every(({ selected }) => !selected)).toBe(true)
   })
 })

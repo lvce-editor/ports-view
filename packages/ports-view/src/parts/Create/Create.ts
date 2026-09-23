@@ -36,6 +36,7 @@ export const create = (
     scrollBarHeight: 0,
     scrollBarY: 0,
     uid,
+    visiblePorts: [],
     width,
     x,
     y,
