@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals'
 import { RendererWorker } from '@lvce-editor/rpc-registry'
 import { addPort } from '../src/parts/AddPort/AddPort.ts'
-import { cancelAddPort, handleAddPortInput, handleAddPortKeyDown, startAddPort, submitAddPort } from '../src/parts/AddPortEditor/AddPortEditor.ts'
+import { cancelAddPort, handleAddPortInput, startAddPort, submitAddPort } from '../src/parts/AddPortEditor/AddPortEditor.ts'
 import { focusFirst } from '../src/parts/FocusFirst/FocusFirst.ts'
 import { focusNext, focusPrevious } from '../src/parts/FocusIndex/FocusIndex.ts'
 import { focusLast } from '../src/parts/FocusLast/FocusLast.ts'
@@ -82,12 +82,10 @@ describe('add port editor', () => {
     expect(editing).toBe(true)
   })
 
-  test('handles enter, escape, and unrelated keys', () => {
+  test('cancels without adding a port', () => {
     const state = createTestState({ addPortValue: '3000', editing: true })
-    expect(handleAddPortKeyDown(state, 'Enter').ports).toHaveLength(1)
-    expect(handleAddPortKeyDown(state, 'Escape').editing).toBe(false)
-    expect(handleAddPortKeyDown(state, 'Shift')).toBe(state)
     expect(cancelAddPort(state)).toMatchObject({ addPortError: '', addPortValue: '', editing: false })
+    expect(cancelAddPort(state).ports).toHaveLength(0)
   })
 })
 

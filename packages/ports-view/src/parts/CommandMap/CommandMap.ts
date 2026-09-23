@@ -49,7 +49,6 @@ export const commandMap = {
   'Ports.getMenuEntries2': PortsStates.wrapGetter(GetMenuEntries2.getMenuEntries2),
   'Ports.getMenuIds': GetMenuIds.getMenuIds,
   'Ports.handleAddPortInput': PortsStates.wrapCommand(AddPortEditor.handleAddPortInput),
-  'Ports.handleAddPortKeyDown': PortsStates.wrapCommand(AddPortEditor.handleAddPortKeyDown),
   'Ports.handleBlur': PortsStates.wrapCommand(HandleBlur.handleBlur),
   'Ports.handleClick': PortsStates.wrapCommand(HandleClick.handleClick),
   'Ports.handleContextMenu': PortsStates.wrapCommand(HandleContextMenu.handleContextMenu),

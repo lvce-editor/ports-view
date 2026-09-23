@@ -3,6 +3,7 @@ import * as DiffType from '../DiffType/DiffType.ts'
 import * as PortsStates from '../PortsStates/PortsStates.ts'
 import * as RenderCss from '../RenderCss/RenderCss.ts'
 import * as RenderDom from '../RenderDom/RenderDom.ts'
+import * as RenderFocus from '../RenderFocus/RenderFocus.ts'
 import * as RenderFocusContext from '../RenderFocusContext/RenderFocusContext.ts'
 import * as RenderIncremental from '../RenderIncremental/RenderIncremental.ts'
 
@@ -14,6 +15,8 @@ const getRenderer = (diffType: number): Renderer => {
       return RenderCss.renderCss
     case DiffType.RenderDom:
       return RenderDom.renderDom
+    case DiffType.RenderFocus:
+      return RenderFocus.renderFocus
     case DiffType.RenderFocusContext:
       return RenderFocusContext.renderFocusContext
     case DiffType.RenderIncremental:

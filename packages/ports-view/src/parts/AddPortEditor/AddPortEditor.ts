@@ -53,13 +53,3 @@ export const submitAddPort = (state: PortsState): PortsState => {
     editing: false,
   }
 }
-
-export const handleAddPortKeyDown = (state: PortsState, key: string): PortsState => {
-  if (key === 'Enter') {
-    return submitAddPort(state)
-  }
-  if (key === 'Escape') {
-    return cancelAddPort(state)
-  }
-  return state
-}
