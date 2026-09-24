@@ -19,6 +19,7 @@ export const createTestState = (overrides: Partial<PortsState> = {}): PortsState
     maxLineY: 0,
     minimumScrollBarSize: 20,
     minLineY: 0,
+    pageScrollMultiplier: 16,
     platform: 1,
     ports: [],
     scrollBarHeight: 0,

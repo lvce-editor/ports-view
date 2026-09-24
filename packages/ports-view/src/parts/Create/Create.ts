@@ -30,6 +30,7 @@ export const create = (
     maxLineY: 0,
     minimumScrollBarSize: 20,
     minLineY: 0,
+    pageScrollMultiplier: 16,
     parentUid,
     platform,
     ports: [],
