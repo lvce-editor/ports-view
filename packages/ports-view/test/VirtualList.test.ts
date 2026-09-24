@@ -67,8 +67,16 @@ describe('virtual list', () => {
 
   test('wheel supports pixel and line modes', () => {
     const state = setPorts(createTestState(), manyPorts)
+    expect(createTestState().pageScrollMultiplier).toBe(16)
     expect(handleWheel(state, 0, 24).deltaY).toBe(24)
     expect(handleWheel(state, 1, 2).deltaY).toBe(32)
+  })
+
+  test('wheel uses the state multiplier for line and page modes but not pixel mode', () => {
+    const state = setPorts(createTestState({ pageScrollMultiplier: 5 }), manyPorts)
+    expect(handleWheel(state, 0, 2).deltaY).toBe(2)
+    expect(handleWheel(state, 1, 2).deltaY).toBe(10)
+    expect(handleWheel(state, 2, 2).deltaY).toBe(10)
   })
 
   test('resize recalculates visible rows', () => {

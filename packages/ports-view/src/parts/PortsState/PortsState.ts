@@ -19,6 +19,7 @@ export interface PortsState {
   readonly minimumScrollBarSize: number
   readonly minLineY: number
   readonly parentUid?: number
+  readonly pageScrollMultiplier: number
   readonly platform: number
   readonly ports: readonly Port[]
   readonly scrollBarHeight: number

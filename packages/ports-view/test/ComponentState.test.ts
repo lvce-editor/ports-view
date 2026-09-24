@@ -8,6 +8,7 @@ test('returns the current state for a ports instance', () => {
   create(1, '', 0, 0, 800, 160, 1, '')
   try {
     expect(getComponentState(1)).toBe(PortsStates.get(1).newState)
+    expect(getComponentState(1).pageScrollMultiplier).toBe(16)
   } finally {
     PortsStates.dispose(1)
   }
