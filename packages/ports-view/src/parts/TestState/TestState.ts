@@ -27,6 +27,7 @@ export const createTestState = (overrides: Partial<PortsState> = {}): PortsState
     uid: 1,
     visiblePorts: [],
     width: 800,
+    workspaceUri: '',
     x: 0,
     y: 0,
     ...overrides,
