@@ -39,6 +39,7 @@ export const create = (
     uid,
     visiblePorts: [],
     width,
+    workspaceUri: uri,
     x,
     y,
   }

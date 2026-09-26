@@ -27,6 +27,7 @@ export interface PortsState {
   readonly uid: number
   readonly visiblePorts: readonly VisiblePort[]
   readonly width: number
+  readonly workspaceUri: string
   readonly x: number
   readonly y: number
 }
