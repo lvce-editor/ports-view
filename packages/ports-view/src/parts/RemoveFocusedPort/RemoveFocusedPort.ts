@@ -1,7 +1,7 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 import * as RemovePort from '../RemovePort/RemovePort.ts'
 
-export const removeFocusedPort = (state: PortsState): PortsState => {
+export const removeFocusedPort = (state: PortsState): PortsState | Promise<PortsState> => {
   const { editing, focusedIndex, ports } = state
   const selected = ports[focusedIndex]
   if (editing || !selected) {

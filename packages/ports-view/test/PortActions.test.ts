@@ -36,8 +36,8 @@ test('port mutations: loads, adds, replaces, removes, and toggles ports', async 
     port: 9000,
     runningProcess: '',
   })
-  const toggled = togglePortActive(replaced, 9000)
-  const removed = removePort(toggled, 9000)
+  const toggled = await togglePortActive(replaced, 9000)
+  const removed = await removePort(toggled, 9000)
   expect(loaded.loaded).toBe(true)
   expect(added.ports).toHaveLength(1)
   expect(replaced.ports).toEqual([expect.objectContaining({ active: false, port: 9000 })])
@@ -46,19 +46,21 @@ test('port mutations: loads, adds, replaces, removes, and toggles ports', async 
   expect(removed.ports).toEqual([])
 })
 
-test('port mutations: ignores unknown toggle and remove targets', () => {
+test('port mutations: ignores unknown toggle and remove targets', async () => {
   const state = setPorts(createTestState(), [
     { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
   ])
   const { ports } = state
-  expect(togglePortActive(state, 9000).ports).toEqual(ports)
-  expect(removePort(state, 9000).ports).toEqual(ports)
+  const toggled = await togglePortActive(state, 9000)
+  const removed = await removePort(state, 9000)
+  expect(toggled.ports).toEqual(ports)
+  expect(removed.ports).toEqual(ports)
 })
 
-test('add port editor: opens, updates, submits, and closes', () => {
+test('add port editor: opens, updates, submits, and closes', async () => {
   const opened = startAddPort(createTestState())
   const updated = handleAddPortInput(opened, ' 5173 ')
-  const submitted = submitAddPort(updated)
+  const submitted = await submitAddPort(updated)
   expect(opened.editing).toBe(true)
   expect(updated.addPortValue).toBe(' 5173 ')
   expect(submitted).toMatchObject({ addPortError: '', addPortValue: '', editing: false })
@@ -73,8 +75,8 @@ test('add port editor: opens, updates, submits, and closes', () => {
   ])
 })
 
-test.each(['', 'abc', '0', '65536'])('add port editor: shows validation for %p', (value) => {
-  const state = submitAddPort(createTestState({ addPortValue: value, editing: true }))
+test.each(['', 'abc', '0', '65536'])('add port editor: shows validation for %p', async (value) => {
+  const state = await submitAddPort(createTestState({ addPortValue: value, editing: true }))
   const { addPortError, editing } = state
   expect(addPortError).toBe('Enter a port number between 1 and 65535')
   expect(editing).toBe(true)
@@ -183,14 +185,14 @@ test('interaction: does not open unknown or empty addresses', async () => {
   expect(mockRpc.invocations).toEqual([])
 })
 
-test('interaction: navigation, activation, deletion, and add commands', () => {
+test('interaction: navigation, activation, deletion, and add commands', async () => {
   const state = setPorts(createTestState(), [
     { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
     { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
   ])
   const down = focusNext(state)
-  const toggled = toggleFocusedPort(down)
-  const removed = removeFocusedPort(toggled)
+  const toggled = await toggleFocusedPort(down)
+  const removed = await removeFocusedPort(toggled)
   expect(down.focusedIndex).toBe(0)
   expect(toggled.ports[0].active).toBe(false)
   expect(removed.ports.map((item) => item.port)).toEqual([5173])
@@ -230,8 +232,8 @@ test('interaction: selected commands ignore editing and absent selection', async
   }
   for (const state of [empty, editing]) {
     expect(await openFocusedAddress(state)).toBe(state)
-    expect(toggleFocusedPort(state)).toBe(state)
-    expect(removeFocusedPort(state)).toBe(state)
+    expect(await toggleFocusedPort(state)).toBe(state)
+    expect(await removeFocusedPort(state)).toBe(state)
   }
 })
 
