@@ -2,8 +2,12 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 // Requires the Ports.getKeyBindings worker configuration and a focus-capable Ports page-object action in the test app. The current test-worker Locator.click() dispatches a click but leaves document.body active, and it does not expose Locator.focus().
 export const skip = 1
-export const test: Test = async ({ expect, KeyBoard, Ports }) => {
+export const test: Test = async ({ Command, expect, KeyBoard, Locator, Ports, Workspace }) => {
+  await Workspace.setUri('remote-ssh://ports-test/workspace')
   await Ports.open()
+  // Preserve the local row-edit fixture; SSH forwarding is covered separately.
+  await Command.execute('Ports.loadContent', '')
+  const portCell0 = Locator('.PortsTableBody > .PortsTableRow:nth-child(1) > .PortsColumn:nth-child(2)')
   await Ports.setPorts([
     { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
     { active: true, forwardedAddress: 'localhost:5173', origin: 'User Forwarded', port: 5173, runningProcess: '' },
@@ -12,7 +16,7 @@ export const test: Test = async ({ expect, KeyBoard, Ports }) => {
   // eslint-disable-next-line e2e/no-direct-click -- Focus the table through the Ports page object locator.
   await ports.click()
   await expect(ports).toBeFocused()
-  const focused = Ports.focusedPort()
+  const focused = Locator('.PortsTableRow.Focused > .PortsColumn:nth-child(2)')
   await KeyBoard.press('ArrowDown')
   await expect(focused).toHaveText('3000')
   await KeyBoard.press('ArrowDown')
@@ -26,7 +30,7 @@ export const test: Test = async ({ expect, KeyBoard, Ports }) => {
   await KeyBoard.press('Space')
   await expect(Ports.statusButton(0)).toHaveAttribute('aria-label', 'Port 3000 is inactive')
   await KeyBoard.press('Delete')
-  const portColumn = Ports.portCell(0)
+  const portColumn = portCell0
   await expect(portColumn).toHaveText('5173')
   await KeyBoard.press('Backspace')
   const rows = Ports.rows()
