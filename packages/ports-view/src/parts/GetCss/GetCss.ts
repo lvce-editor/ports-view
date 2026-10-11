@@ -12,6 +12,7 @@ export const getCss = (state: PortsState): string => {
 }
 
 .PortsTableHeader {
+  contain: strict;
   flex: 0 0 ${headerHeight}px;
 }
 
