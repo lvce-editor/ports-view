@@ -5,6 +5,7 @@ export const test: Test = async ({ expect, Locator, Ports, Workspace }) => {
   await Ports.open()
   const headers = Locator('.PortsTableHeader > .PortsColumn')
   await expect(headers).toHaveCount(5)
+  await expect(Locator('.PortsTableHeader')).toHaveCSS('contain', 'strict')
   const portHeader = headers.nth(1)
   const addressHeader = headers.nth(2)
   const processHeader = headers.nth(3)
