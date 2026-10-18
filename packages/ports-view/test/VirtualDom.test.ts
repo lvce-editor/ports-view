@@ -204,12 +204,16 @@ test('render protocol: registers interaction event listeners and commands', () =
   expect(Object.keys(commandMap)).not.toContain('Ports.handleAddPortKeyDown')
 })
 
-test('render protocol: creates, diffs, and renders registered view state', () => {
+test('render protocol: creates, diffs, and renders registered view state', async () => {
   create(77, '', 1, 2, 800, 160, 1, '', 9)
   const initial = PortsStates.get(77).newState
   expect(initial).toMatchObject({ parentUid: 9, uid: 77, x: 1, y: 2 })
   PortsStates.set(77, initial, { ...initial, loaded: true })
   expect(diff2(77)).toEqual([2, 1])
-  expect(render2(77, [1, 2, 3]).map((command) => command[0])).toEqual([ViewletCommand.SetCss, ViewletCommand.SetDom2, ViewletCommand.SetPatches])
+  expect((await render2(77, [1, 2, 3])).map((command) => command[0])).toEqual([
+    ViewletCommand.SetCss,
+    ViewletCommand.SetDom2,
+    ViewletCommand.SetPatches,
+  ])
   expect(() => render2(77, [999])).toThrow('Unknown diff type 999')
 })

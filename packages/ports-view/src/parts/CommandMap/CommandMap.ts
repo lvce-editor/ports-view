@@ -14,8 +14,8 @@ import * as GetMenuIds from '../GetMenuIds/GetMenuIds.ts'
 import * as HandleBlur from '../HandleBlur/HandleBlur.ts'
 import * as HandleClick from '../HandleClick/HandleClick.ts'
 import * as HandleContextMenu from '../HandleContextMenu/HandleContextMenu.ts'
-import * as HandleMessagePort from '../HandleMessagePort/HandleMessagePort.ts'
 import * as HandleFocus from '../HandleFocus/HandleFocus.ts'
+import * as HandleMessagePort from '../HandleMessagePort/HandleMessagePort.ts'
 import * as HandleWheel from '../HandleWheel/HandleWheel.ts'
 import * as LoadContent from '../LoadContent/LoadContent.ts'
 import * as OpenAddress from '../OpenAddress/OpenAddress.ts'
@@ -53,8 +53,8 @@ export const commandMap = {
   'Ports.handleBlur': PortsStates.wrapSerialCommand(HandleBlur.handleBlur),
   'Ports.handleClick': PortsStates.wrapSerialCommand(HandleClick.handleClick),
   'Ports.handleContextMenu': PortsStates.wrapSerialCommand(HandleContextMenu.handleContextMenu),
-  'Ports.handleMessagePort': HandleMessagePort.handleMessagePort,
   'Ports.handleFocus': PortsStates.wrapSerialCommand(HandleFocus.handleFocus),
+  'Ports.handleMessagePort': HandleMessagePort.handleMessagePort,
   'Ports.handleWheel': PortsStates.wrapSerialCommand(HandleWheel.handleWheel),
   'Ports.handleWorkspaceChange': PortsStates.wrapSerialCommand(LoadContent.loadContent),
   'Ports.loadContent': PortsStates.wrapSerialCommand(LoadContent.loadContent),
