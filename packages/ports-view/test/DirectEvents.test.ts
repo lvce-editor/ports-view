@@ -100,3 +100,24 @@ test('restores the render baseline after queue failure without dropping newer in
   expect(PortsStates.get(1).newState.editing).toBe(true)
   await render2(1, diff2(1))
 })
+
+test('drops queued input when the view is disposed and recreated with the same uid', async () => {
+  const { promise, resolve } = Promise.withResolvers<void>()
+  const started = Promise.withResolvers<void>()
+  PortsStates.registerCommands({
+    'Ports.waitForPreviousEvent': PortsStates.wrapSerialCommand(async (state) => {
+      started.resolve()
+      await promise
+      return state
+    }),
+  })
+  const previous = directState.commands['Viewlet.executeViewletCommand'](1, 'waitForPreviousEvent')
+  await started.promise
+  const stale = directState.commands['Viewlet.executeViewletCommand'](1, 'handleAddPortInput', 'stale')
+  PortsStates.dispose(1)
+  const recreated = createTestState({ loaded: true })
+  PortsStates.set(1, recreated, recreated)
+  resolve()
+  await Promise.all([previous, stale])
+  expect(PortsStates.get(1).newState.addPortValue).toBe('')
+})
