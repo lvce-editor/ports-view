@@ -13,4 +13,4 @@ const applyComponentState = (currentState: PortsState, state: PortsState): Ports
   return state
 }
 
-export const setComponentState = PortsStates.wrapCommand(applyComponentState)
+export const setComponentState = PortsStates.wrapSerialCommand(applyComponentState)
