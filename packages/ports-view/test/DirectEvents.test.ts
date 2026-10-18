@@ -121,3 +121,13 @@ test('drops queued input when the view is disposed and recreated with the same u
   await Promise.all([previous, stale])
   expect(PortsStates.get(1).newState.addPortValue).toBe('')
 })
+
+test('secondary ports preserve the renderer-process connection used for patch commits', async () => {
+  const secondaryInvoke = jest.fn<(...args: readonly any[]) => Promise<any>>().mockResolvedValue(99)
+  createRpc.mockResolvedValueOnce({ invoke: secondaryInvoke })
+  await commandMap['Ports.handleMessagePort']({} as MessagePort, false)
+  await directState.commands['Viewlet.executeViewletCommand'](1, 'startAddPort')
+  await render2(1, diff2(1))
+  expect(processInvoke).toHaveBeenCalledWith('Viewlet.queueCommands', 1, expect.any(Array))
+  expect(secondaryInvoke).not.toHaveBeenCalled()
+})
