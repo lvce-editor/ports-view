@@ -210,10 +210,7 @@ test('render protocol: creates, diffs, and renders registered view state', async
   expect(initial).toMatchObject({ parentUid: 9, uid: 77, x: 1, y: 2 })
   PortsStates.set(77, initial, { ...initial, loaded: true })
   expect(diff2(77)).toEqual([2, 1])
-  expect((await render2(77, [1, 2, 3])).map((command) => command[0])).toEqual([
-    ViewletCommand.SetCss,
-    ViewletCommand.SetDom2,
-    ViewletCommand.SetPatches,
-  ])
+  const commands = await render2(77, [1, 2, 3])
+  expect(commands.map((command) => command[0])).toEqual([ViewletCommand.SetCss, ViewletCommand.SetDom2, ViewletCommand.SetPatches])
   expect(() => render2(77, [999])).toThrow('Unknown diff type 999')
 })
