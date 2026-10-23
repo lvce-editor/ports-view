@@ -42,7 +42,7 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
       tabIndex: TabIndex.Unfocusable,
       type: VirtualDomElements.A,
     },
-    text(port.forwardedAddress),
+    text(visiblePort.forwardedAddress),
     ...GetTextCell.getTextCell(visiblePort.runningProcess, 'PortsProcessColumn'),
     ...GetTextCell.getTextCell(visiblePort.origin, 'PortsOriginColumn'),
   ]
