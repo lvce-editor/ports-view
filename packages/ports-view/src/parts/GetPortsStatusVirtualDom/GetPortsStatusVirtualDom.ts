@@ -2,9 +2,14 @@ import { mergeClassNames, text, type VirtualDomNode, VirtualDomElements } from '
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
 
+const getPortStatusText = (active: boolean): string => {
+  return active ? '●' : '○'
+}
+
 export const getPortsStatusVirtualDom = (active: boolean, port: number): readonly VirtualDomNode[] => {
   const label = active ? PortsStrings.portIsActive(port) : PortsStrings.portIsInactive(port)
   const stateClass = active ? ClassNames.PortsStatusIconActive : ClassNames.PortsStatusIconInactive
+  const statusText = getPortStatusText(active)
   return [
     {
       ariaLabel: label,
@@ -20,6 +25,6 @@ export const getPortsStatusVirtualDom = (active: boolean, port: number): readonl
       name: `port-status-${port}`,
       type: VirtualDomElements.Span,
     },
-    text(active ? '●' : '○'),
+    text(statusText),
   ]
 }

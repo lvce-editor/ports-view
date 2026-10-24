@@ -6,6 +6,7 @@ import * as DiffType from '../src/parts/DiffType/DiffType.ts'
 import { handleFocus } from '../src/parts/HandleFocus/HandleFocus.ts'
 import * as PortsStates from '../src/parts/PortsStates/PortsStates.ts'
 import { render2 } from '../src/parts/Render2/Render2.ts'
+import { renderFocus } from '../src/parts/RenderFocus/RenderFocus.ts'
 import { renderFocusContext } from '../src/parts/RenderFocusContext/RenderFocusContext.ts'
 import { createTestState } from '../src/parts/TestState/TestState.ts'
 import * as WhenExpression from '../src/parts/WhenExpression/WhenExpression.ts'
@@ -21,11 +22,22 @@ test('enables ports shortcuts when the table receives focus', () => {
 
 test('disables table shortcuts while adding a port', () => {
   const state = createTestState({ focused: true })
-  expect(renderFocusContext(state, { ...state, editing: true })).toEqual([ViewletCommand.SetFocusContext, 1, WhenExpression.Empty])
+  expect(renderFocusContext(state, { ...state, editing: true })).toEqual([ViewletCommand.SetFocusContext, 1, WhenExpression.FocusPortsAddPort])
   expect(renderFocusContext({ ...state, editing: true }, state)).toEqual([ViewletCommand.SetFocusContext, 1, WhenExpression.FocusPorts])
+})
+
+test('moves focus to the editor and back to the ports table', () => {
+  const state = createTestState()
+  expect(renderFocus(state, { ...state, editing: true })).toEqual([ViewletCommand.FocusSelector, 1, '.AddPortInput'])
+  expect(renderFocus({ ...state, editing: true }, state)).toEqual([ViewletCommand.FocusSelector, 1, '.Ports'])
 })
 
 test('removes only the ports context when the table loses focus', () => {
   const state = createTestState()
   expect(renderFocusContext(state, state)).toEqual(['Viewlet.unsetAdditionalFocus', 1, WhenExpression.FocusPorts])
+})
+
+test('clears the editing context when the editor loses focus', () => {
+  const state = createTestState({ editing: true })
+  expect(renderFocusContext(state, { ...state, focused: false })).toEqual(['Viewlet.unsetAdditionalFocus', 1, WhenExpression.FocusPortsAddPort])
 })

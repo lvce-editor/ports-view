@@ -1,7 +1,8 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
+import * as GetVisiblePorts from '../GetVisiblePorts/GetVisiblePorts.ts'
 
 export const createTestState = (overrides: Partial<PortsState> = {}): PortsState => {
-  return {
+  const state: PortsState = {
     addPortError: '',
     addPortValue: '',
     deltaY: 0,
@@ -18,14 +19,21 @@ export const createTestState = (overrides: Partial<PortsState> = {}): PortsState
     maxLineY: 0,
     minimumScrollBarSize: 20,
     minLineY: 0,
+    pageScrollMultiplier: 16,
     platform: 1,
     ports: [],
     scrollBarHeight: 0,
     scrollBarY: 0,
     uid: 1,
+    visiblePorts: [],
     width: 800,
+    workspaceUri: '',
     x: 0,
     y: 0,
     ...overrides,
+  }
+  return {
+    ...state,
+    visiblePorts: GetVisiblePorts.getVisiblePorts(state),
   }
 }

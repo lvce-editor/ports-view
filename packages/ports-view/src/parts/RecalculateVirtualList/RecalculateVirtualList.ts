@@ -1,5 +1,6 @@
 import type { PortsState } from '../PortsState/PortsState.ts'
 import * as Clamp from '../Clamp/Clamp.ts'
+import * as GetVisiblePorts from '../GetVisiblePorts/GetVisiblePorts.ts'
 
 export const recalculateVirtualList = (state: PortsState): PortsState => {
   const { deltaY: oldDeltaY, footerHeight, headerHeight, height, itemHeight, minimumScrollBarSize, ports } = state
@@ -13,7 +14,7 @@ export const recalculateVirtualList = (state: PortsState): PortsState => {
   const scrollBarHeight =
     contentHeight <= listHeight || listHeight === 0 ? 0 : Math.max(minimumScrollBarSize, (listHeight * listHeight) / contentHeight)
   const scrollBarY = finalDeltaY === 0 ? 0 : (deltaY / finalDeltaY) * (listHeight - scrollBarHeight)
-  return {
+  const calculated: PortsState = {
     ...state,
     deltaY,
     finalDeltaY,
@@ -22,5 +23,9 @@ export const recalculateVirtualList = (state: PortsState): PortsState => {
     minLineY,
     scrollBarHeight,
     scrollBarY,
+  }
+  return {
+    ...calculated,
+    visiblePorts: GetVisiblePorts.getVisiblePorts(calculated),
   }
 }

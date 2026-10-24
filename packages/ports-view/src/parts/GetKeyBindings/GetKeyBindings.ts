@@ -54,5 +54,15 @@ export const getKeyBindings = (): readonly KeyBinding[] => {
       key: KeyCode.Backspace,
       when: WhenExpression.FocusPorts,
     },
+    {
+      command: 'Ports.submitAddPort',
+      key: KeyCode.Enter,
+      when: WhenExpression.FocusPortsAddPort,
+    },
+    {
+      command: 'Ports.cancelAddPort',
+      key: KeyCode.Escape,
+      when: WhenExpression.FocusPortsAddPort,
+    },
   ]
 }

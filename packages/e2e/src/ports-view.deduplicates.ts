@@ -1,12 +1,11 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
-export const skip = 1
-
-export const test: Test = async ({ expect, Ports }) => {
+export const test: Test = async ({ expect, Ports, Workspace }) => {
+  await Workspace.setUri('remote-ssh://ports-test/workspace')
   await Ports.open()
   await Ports.setPorts([
-    { active: true, port: 3000 },
-    { active: false, port: 3000 },
+    { active: true, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
+    { active: false, forwardedAddress: 'localhost:3000', origin: 'User Forwarded', port: 3000, runningProcess: '' },
   ])
   const rows = Ports.rows()
   await expect(rows).toHaveCount(1)

@@ -17,6 +17,8 @@ test('registers standard keybindings for all ports shortcuts', () => {
     { command: 'Ports.toggleFocusedPort', key: KeyCode.Space, when: WhenExpression.FocusPorts },
     { command: 'Ports.removeFocusedPort', key: KeyCode.Delete, when: WhenExpression.FocusPorts },
     { command: 'Ports.removeFocusedPort', key: KeyCode.Backspace, when: WhenExpression.FocusPorts },
+    { command: 'Ports.submitAddPort', key: KeyCode.Enter, when: WhenExpression.FocusPortsAddPort },
+    { command: 'Ports.cancelAddPort', key: KeyCode.Escape, when: WhenExpression.FocusPortsAddPort },
   ])
   expect(commandMap['Ports.getKeyBindings']).toBe(getKeyBindings)
   for (const { command } of bindings) {

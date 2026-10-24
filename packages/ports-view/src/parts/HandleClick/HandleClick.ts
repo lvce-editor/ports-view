@@ -4,23 +4,19 @@ import * as HandleClickAt from '../HandleClickAt/HandleClickAt.ts'
 import * as OpenAddress from '../OpenAddress/OpenAddress.ts'
 import * as TogglePortActive from '../TogglePortActive/TogglePortActive.ts'
 
-const parsePort = (name: string): number => {
-  return Number(name.slice(name.lastIndexOf('-') + 1))
-}
-
 export const handleClick = async (state: PortsState, clientY: number, name: string): Promise<PortsState> => {
   const { ports } = state
+  const index = HandleClickAt.getIndexAt(state, clientY)
+  if (index === -1) {
+    return state
+  }
+  const port = ports[index]
+  const focused = FocusIndex.focusIndex(state, index)
   if (name.startsWith('port-address-')) {
-    const portNumber = parsePort(name)
-    const index = ports.findIndex((item) => item.port === portNumber)
-    const focused = index === -1 ? state : FocusIndex.focusIndex(state, index)
-    return OpenAddress.openAddress(focused, portNumber)
+    return OpenAddress.openAddress(focused, port.port)
   }
   if (name.startsWith('port-status-')) {
-    const portNumber = parsePort(name)
-    const index = ports.findIndex((item) => item.port === portNumber)
-    const focused = index === -1 ? state : FocusIndex.focusIndex(state, index)
-    return TogglePortActive.togglePortActive(focused, portNumber)
+    return TogglePortActive.togglePortActive(focused, port.port)
   }
-  return HandleClickAt.handleClickAt(state, clientY, name)
+  return focused
 }

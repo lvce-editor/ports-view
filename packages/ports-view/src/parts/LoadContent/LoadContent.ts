@@ -17,7 +17,7 @@ export const loadContent = async (state: PortsState, workspaceUri = ''): Promise
     if (requests.get(uid) !== request) {
       return PortsStates.get(uid).newState
     }
-    return SetPorts.setPorts(state, ports)
+    return { ...SetPorts.setPorts(state, ports), workspaceUri }
   } finally {
     if (requests.get(uid) === request) {
       requests.delete(uid)

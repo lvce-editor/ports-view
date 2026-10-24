@@ -7,7 +7,13 @@ import { createTestState } from '../src/parts/TestState/TestState.ts'
 test('loads port 3000 and its Codespaces forwarded URL from the workspace provider', async () => {
   using rpc = RendererWorker.registerMockRpc({
     'Application.executeForView': async () => [
-      { forwardedAddress: 'https://test-space-3000.app.github.dev/', origin: 'devcontainer.json', port: 3000 },
+      {
+        active: true,
+        forwardedAddress: 'https://test-space-3000.app.github.dev/',
+        origin: 'devcontainer.json',
+        port: 3000,
+        runningProcess: '',
+      },
     ],
   })
   const result = await loadContent(createTestState(), 'codespaces://test-space/workspaces/app')
@@ -38,7 +44,8 @@ test('reports provider failures', async () => {
 })
 
 test('late remote results cannot restore ports after a workspace change', async () => {
-  const { promise, resolve } = Promise.withResolvers<readonly { port: number; forwardedAddress: string }[]>()
+  const { promise, resolve } =
+    Promise.withResolvers<readonly { active: boolean; forwardedAddress: string; origin: string; port: number; runningProcess: string }[]>()
   using rpc = RendererWorker.registerMockRpc({ 'Application.executeForView': () => promise })
   const state = createTestState()
   const { uid } = state
@@ -47,7 +54,7 @@ test('late remote results cannot restore ports after a workspace change', async 
     const pending = loadContent(state, 'codespaces://old/app')
     const closed = await loadContent(state, '')
     PortsStates.set(uid, state, closed)
-    resolve([{ forwardedAddress: 'https://old-3000.app.github.dev/', port: 3000 }])
+    resolve([{ active: true, forwardedAddress: 'https://old-3000.app.github.dev/', origin: 'devcontainer.json', port: 3000, runningProcess: '' }])
     expect(await pending).toBe(closed)
     expect(rpc.invocations).toHaveLength(1)
   } finally {

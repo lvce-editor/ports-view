@@ -1,4 +1,5 @@
 import type { Port } from '../Port/Port.ts'
+import type { VisiblePort } from '../VisiblePort/VisiblePort.ts'
 
 export interface PortsState {
   readonly addPortError: string
@@ -17,13 +18,16 @@ export interface PortsState {
   readonly maxLineY: number
   readonly minimumScrollBarSize: number
   readonly minLineY: number
+  readonly pageScrollMultiplier: number
   readonly parentUid?: number
   readonly platform: number
   readonly ports: readonly Port[]
   readonly scrollBarHeight: number
   readonly scrollBarY: number
   readonly uid: number
+  readonly visiblePorts: readonly VisiblePort[]
   readonly width: number
+  readonly workspaceUri: string
   readonly x: number
   readonly y: number
 }

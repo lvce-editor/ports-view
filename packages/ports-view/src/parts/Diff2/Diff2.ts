@@ -7,7 +7,7 @@ export const diff2 = (uid: number): readonly number[] => {
   const domDiffType = oldState.loaded ? DiffType.RenderIncremental : DiffType.RenderDom
   return PortsStates.diff(
     uid,
-    [DiffModules.isDomEqual, DiffModules.isCssEqual, DiffModules.isFocusContextEqual],
-    [domDiffType, DiffType.RenderCss, DiffType.RenderFocusContext],
+    [DiffModules.isDomEqual, DiffModules.isCssEqual, DiffModules.isFocusContextEqual, DiffModules.isEditingEqual],
+    [domDiffType, DiffType.RenderCss, DiffType.RenderFocusContext, DiffType.RenderFocus],
   )
 }

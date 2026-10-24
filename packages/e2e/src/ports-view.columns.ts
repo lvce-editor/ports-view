@@ -1,11 +1,12 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
-export const skip = 1
-
-export const test: Test = async ({ expect, Ports }) => {
+export const test: Test = async ({ expect, Locator, Ports, Workspace }) => {
+  await Workspace.setUri('remote-ssh://ports-test/workspace')
   await Ports.open()
-  const headers = Ports.headers()
+  const headers = Locator('.PortsTableHeader > .PortsColumn')
+  const header = Locator('.PortsTableHeader')
   await expect(headers).toHaveCount(5)
+  await expect(header).toHaveCSS('contain', 'strict')
   const portHeader = headers.nth(1)
   const addressHeader = headers.nth(2)
   const processHeader = headers.nth(3)

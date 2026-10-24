@@ -4,7 +4,8 @@ import * as WhenExpression from '../WhenExpression/WhenExpression.ts'
 
 export const renderFocusContext = (oldState: PortsState, newState: PortsState): readonly any[] => {
   if (!newState.focused) {
-    return ['Viewlet.unsetAdditionalFocus', newState.uid, WhenExpression.FocusPorts]
+    const focusContext = oldState.editing ? WhenExpression.FocusPortsAddPort : WhenExpression.FocusPorts
+    return ['Viewlet.unsetAdditionalFocus', newState.uid, focusContext]
   }
-  return [ViewletCommand.SetFocusContext, newState.uid, newState.editing ? WhenExpression.Empty : WhenExpression.FocusPorts]
+  return [ViewletCommand.SetFocusContext, newState.uid, newState.editing ? WhenExpression.FocusPortsAddPort : WhenExpression.FocusPorts]
 }

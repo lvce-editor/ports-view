@@ -8,10 +8,6 @@ export const renderEventListeners = (): readonly any[] => {
       params: ['handleAddPortInput', EventExpression.TargetValue],
     },
     {
-      name: DomEventListenerFunctions.HandleAddPortKeyDown,
-      params: ['handleAddPortKeyDown', EventExpression.Key],
-    },
-    {
       name: DomEventListenerFunctions.HandleBlur,
       params: ['handleBlur'],
     },
@@ -22,6 +18,11 @@ export const renderEventListeners = (): readonly any[] => {
     {
       name: DomEventListenerFunctions.HandleClick,
       params: ['handleClick', EventExpression.ClientY, EventExpression.TargetName],
+    },
+    {
+      name: DomEventListenerFunctions.HandleContextMenu,
+      params: ['handleContextMenu', EventExpression.ClientX, EventExpression.ClientY, EventExpression.TargetName],
+      preventDefault: true,
     },
     {
       name: DomEventListenerFunctions.HandleFocus,

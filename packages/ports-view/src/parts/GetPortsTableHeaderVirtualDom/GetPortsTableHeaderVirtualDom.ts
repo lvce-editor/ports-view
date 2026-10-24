@@ -1,4 +1,4 @@
-import { mergeClassNames, text, type VirtualDomNode, VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
+import { text, type VirtualDomNode, VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
 import * as AriaRoles from '../AriaRoles/AriaRoles.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as PortsStrings from '../PortsStrings/PortsStrings.ts'
@@ -10,25 +10,24 @@ const headerRow: VirtualDomNode = {
   type: VirtualDomElements.Div,
 }
 
-const getHeaderCell = (label: string, className: string): readonly VirtualDomNode[] => {
-  return [
-    {
-      childCount: 1,
-      className: mergeClassNames(ClassNames.PortsTableCell, className),
-      role: AriaRoles.ColumnHeader,
-      type: VirtualDomElements.Div,
-    },
-    text(label),
-  ]
+const headerCell: VirtualDomNode = {
+  childCount: 1,
+  className: ClassNames.PortsColumn,
+  role: AriaRoles.ColumnHeader,
+  type: VirtualDomElements.Div,
+}
+
+const getHeaderCell = (label: string): readonly VirtualDomNode[] => {
+  return [headerCell, text(label)]
 }
 
 export const getPortsTableHeaderVirtualDom = (): readonly VirtualDomNode[] => {
   return [
     headerRow,
-    ...getHeaderCell('', 'PortsStatusColumn'),
-    ...getHeaderCell(PortsStrings.port(), 'PortsPortColumn'),
-    ...getHeaderCell(PortsStrings.forwardedAddress(), 'PortsAddressColumn'),
-    ...getHeaderCell(PortsStrings.runningProcess(), 'PortsProcessColumn'),
-    ...getHeaderCell(PortsStrings.origin(), 'PortsOriginColumn'),
+    ...getHeaderCell(''),
+    ...getHeaderCell(PortsStrings.port()),
+    ...getHeaderCell(PortsStrings.forwardedAddress()),
+    ...getHeaderCell(PortsStrings.runningProcess()),
+    ...getHeaderCell(PortsStrings.origin()),
   ]
 }

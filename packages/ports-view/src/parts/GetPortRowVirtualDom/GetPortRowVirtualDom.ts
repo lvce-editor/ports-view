@@ -1,4 +1,4 @@
-import { mergeClassNames, text, type VirtualDomNode, VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
+import { text, type VirtualDomNode, VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
 import type { VisiblePort } from '../VisiblePort/VisiblePort.ts'
 import * as AriaRoles from '../AriaRoles/AriaRoles.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
@@ -9,7 +9,7 @@ import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const statusCell: VirtualDomNode = {
   childCount: 1,
-  className: mergeClassNames(ClassNames.PortsTableCell, 'PortsStatusColumn'),
+  className: ClassNames.PortsColumn,
   role: AriaRoles.Cell,
   type: VirtualDomElements.Div,
 }
@@ -26,10 +26,10 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
     },
     statusCell,
     ...GetPortsStatusVirtualDom.getPortsStatusVirtualDom(visiblePort.active, visiblePort.port),
-    ...GetTextCell.getTextCell(portText, 'PortsPortColumn'),
+    ...GetTextCell.getTextCell(portText),
     {
       childCount: 1,
-      className: mergeClassNames(ClassNames.PortsTableCell, 'PortsAddressColumn'),
+      className: ClassNames.PortsColumn,
       role: AriaRoles.Cell,
       title: visiblePort.forwardedAddress,
       type: VirtualDomElements.Div,
@@ -43,7 +43,7 @@ export const getPortRowVirtualDom = (visiblePort: VisiblePort): readonly Virtual
       type: VirtualDomElements.A,
     },
     text(visiblePort.forwardedAddress),
-    ...GetTextCell.getTextCell(visiblePort.runningProcess, 'PortsProcessColumn'),
-    ...GetTextCell.getTextCell(visiblePort.origin, 'PortsOriginColumn'),
+    ...GetTextCell.getTextCell(visiblePort.runningProcess),
+    ...GetTextCell.getTextCell(visiblePort.origin),
   ]
 }

@@ -16,17 +16,18 @@ export const normalizePort = (input: PortInput): Port => {
   if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) {
     throw new RangeError('port must be an integer between 1 and 65535')
   }
-  const forwardedAddress = input.forwardedAddress ?? `localhost:${port}`
-  const runningProcess = input.runningProcess ?? ''
-  const origin = input.origin ?? PortsStrings.userForwarded()
+  const rawInput = input as Partial<PortInput>
+  const forwardedAddress = rawInput.forwardedAddress ?? `localhost:${port}`
+  const runningProcess = rawInput.runningProcess ?? ''
+  const origin = rawInput.origin ?? PortsStrings.userForwarded()
   assertString(forwardedAddress, 'forwardedAddress')
   assertString(runningProcess, 'runningProcess')
   assertString(origin, 'origin')
-  if (input.active !== undefined && typeof input.active !== 'boolean') {
+  if (rawInput.active !== undefined && typeof rawInput.active !== 'boolean') {
     throw new TypeError('active must be a boolean')
   }
   return {
-    active: input.active ?? true,
+    active: rawInput.active ?? true,
     forwardedAddress,
     origin,
     port,

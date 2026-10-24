@@ -20,11 +20,25 @@ const getPortInputDom = (addPortValue: string): readonly VirtualDomNode[] => {
       className: ClassNames.AddPortInput,
       inputMode: 'numeric',
       onInput: DomEventListenerFunctions.HandleAddPortInput,
-      onKeyDown: DomEventListenerFunctions.HandleAddPortKeyDown,
       placeholder: PortsStrings.portNumber(),
       type: VirtualDomElements.Input,
       value: addPortValue,
     },
+  ]
+}
+
+const getButtonsDom = (addPortValue: string): readonly VirtualDomNode[] => {
+  return [
+    {
+      childCount: 1,
+      className: ClassNames.AddPortButton,
+      disabled: addPortValue.length === 0,
+      onClick: DomEventListenerFunctions.HandleSubmitAddPort,
+      type: VirtualDomElements.Button,
+    },
+    text(PortsStrings.add()),
+    cancelButton,
+    text(PortsStrings.cancel()),
   ]
 }
 
@@ -37,16 +51,7 @@ export const getEditor = (state: PortsState): readonly VirtualDomNode[] => {
       type: VirtualDomElements.Div,
     },
     ...getPortInputDom(addPortValue),
-    {
-      childCount: 1,
-      className: ClassNames.AddPortButton,
-      disabled: addPortValue.length === 0,
-      onClick: DomEventListenerFunctions.HandleSubmitAddPort,
-      type: VirtualDomElements.Button,
-    },
-    text(PortsStrings.add()),
-    cancelButton,
-    text(PortsStrings.cancel()),
+    ...getButtonsDom(addPortValue),
     ...GetErrorDom.getErrorDom(addPortError),
   ]
 }

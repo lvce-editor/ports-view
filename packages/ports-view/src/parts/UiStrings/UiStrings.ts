@@ -1,6 +1,7 @@
 export const Add = 'Add'
 export const AddPort = 'Add Port'
 export const Cancel = 'Cancel'
+export const CopyLink = 'Copy Link'
 export const EnterAPortNumberBetween1And65535 = 'Enter a port number between 1 and 65535'
 export const ForwardedAddress = 'Forwarded Address'
 export const NoForwardedPorts = 'No forwarded ports'

@@ -8,6 +8,8 @@ export const openAddress = async (state: PortsState, portNumber: number): Promis
   if (!port || !port.forwardedAddress) {
     return state
   }
-  await RendererWorker.openUri(GetAddressUrl.getAddressUrl(port.forwardedAddress))
+  const url = GetAddressUrl.getAddressUrl(port.forwardedAddress)
+  await RendererWorker.invoke('Layout.showPreview', 'simple-browser://')
+  await RendererWorker.invoke('SimpleBrowser.openOrRevealTab', url)
   return state
 }
